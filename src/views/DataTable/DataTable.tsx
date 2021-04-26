@@ -21,7 +21,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import MyBox from '../../components/MyBox'
 
-interface Data {
+type Data = {
   sku: number
   nombre: string
   marca: string
@@ -29,13 +29,7 @@ interface Data {
   tienda: string
 }
 
-function createData(
-  sku: number,
-  nombre: string,
-  marca: string,
-  precio: number,
-  tienda: string
-): Data {
+function createData(sku: number, nombre: string, marca: string, precio: number, tienda: string): Data {
   return { sku, nombre, marca, precio, tienda }
 }
 
@@ -278,10 +272,7 @@ const DataTable: React.FC = () => {
     } else if (selectedIndex === selected.length - 1) {
       newSelected = newSelected.concat(selected.slice(0, -1))
     } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      )
+      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1))
     }
 
     setSelected(newSelected)
@@ -342,18 +333,9 @@ const DataTable: React.FC = () => {
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ 'aria-labelledby': labelId }}
-                        />
+                        <Checkbox checked={isItemSelected} inputProps={{ 'aria-labelledby': labelId }} />
                       </TableCell>
-                      <TableCell
-                        align="right"
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
+                      <TableCell align="right" component="th" id={labelId} scope="row" padding="none">
                         {row.sku}
                       </TableCell>
                       <TableCell align="left">{row.nombre}</TableCell>
@@ -383,10 +365,7 @@ const DataTable: React.FC = () => {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
+      <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" />
     </MyBox>
   )
 }

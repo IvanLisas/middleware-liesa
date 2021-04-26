@@ -17,13 +17,11 @@ const ThemeContextProvider: React.FC = ({ children }) => {
 
   const paletteStyle = () => (isDark ? themeDark : themeLight)
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const togglePaletteStyle = () => setIsDark(!isDark)
-
   const primaryColor = () => '#399ead' //Celeste
 
   const secondaryColor = () => '#b565a2' //Rosa
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const secondaryColor2 = () => '#e23f3f' //Naranja
 
   const theme = createMuiTheme({

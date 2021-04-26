@@ -31,7 +31,8 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     backgroundColor: theme.palette.background.paper,
     borderBottom: '2px solid rgba(133, 133, 133, 0.1)',
-    height: appBarHeight
+    height: appBarHeight,
+    position: 'fixed'
   },
   divider: {
     height: '1px'

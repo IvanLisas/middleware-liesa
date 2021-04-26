@@ -4,7 +4,6 @@ import { userService } from '../../services/UserService'
 import { useHistory } from 'react-router-dom'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
-import { pepe } from '../../stubs/UserStub'
 /* import showError from '../../Errors/Error'
 import { useSnackbar } from 'notistack' */
 

@@ -6,8 +6,7 @@ class MeliService {
   axiosConfig = {
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'User-Agent': ''
+      'Access-Control-Allow-Origin': '*'
     }
   }
 

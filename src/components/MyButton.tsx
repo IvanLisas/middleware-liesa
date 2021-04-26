@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
 import { ButtonProps } from '@material-ui/core/Button'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   button: {
     borderRadius: '16px',
     /* backgroundColor:  theme.palette.secondary.main, */

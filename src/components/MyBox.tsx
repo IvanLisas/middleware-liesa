@@ -7,21 +7,19 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    height: '100%',
-    paddingTop: 65
+    flexWrap: 'wrap',
+    padding: '65px 0px' //Tiene que depender del tamaño del nav
   },
 
   box: {
-    /* minWidth:'500px', */
     backgroundColor: theme.palette.background.paper,
     borderRadius: 20,
     padding: 20,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    /*     marginTop: 250, */
-    /*    paddingTop: '100px', */
-    gap: '4px'
+    /*  gap: '4px', */
+    marginTop: 18 //Espacio entre el nav y el bOX
   },
   backgroundImage: {
     position: 'absolute',
@@ -39,7 +37,6 @@ const Box: React.FC = ({ children }) => {
 
   return (
     <div className={classes.root}>
-      <img className={classes.backgroundImage} src="back1.png" />
       <div className={classes.box}>{children}</div>
     </div>
   )
