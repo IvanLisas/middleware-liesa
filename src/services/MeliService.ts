@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { MELI_CATEGORIES_URL, MELI_CATEGORY_URL } from '../config/Rest'
+import { SERVER_URL } from '../config/Rest'
 import { CategotyType } from '../types/CategotyType'
 
 class MeliService {
@@ -13,7 +13,7 @@ class MeliService {
   async getGategory(id: string) {
     let categoriesJSON: [] = []
 
-    await axios.get(`${MELI_CATEGORY_URL}/${id}`, this.axiosConfig).then((response) => {
+    await axios.get(`${SERVER_URL}/categories/${id}`, this.axiosConfig).then((response) => {
       categoriesJSON = response.data.children_categories
     })
 
@@ -23,7 +23,7 @@ class MeliService {
   async getGategories() {
     let categoriesJSON: [] = []
 
-    await axios.get(MELI_CATEGORIES_URL, this.axiosConfig).then((response) => {
+    await axios.get(`${SERVER_URL}/sites/MLA/categories'`, this.axiosConfig).then((response) => {
       categoriesJSON = response.data
     })
 
