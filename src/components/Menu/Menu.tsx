@@ -8,19 +8,20 @@ import List from '@material-ui/core/List'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
-import { Icon } from '@material-ui/core'
+import { Icon, Link } from '@material-ui/core'
 import { withRouter } from 'react-router-dom'
 import { UserContext } from '../../contexts/UserContext'
 import { useHistory } from 'react-router-dom'
 import CollapseButton from './CollapseButton'
 import { ThemeContextDispatch } from '../../contexts/ThemeContext'
-import InstagramIcon from '@material-ui/icons/Instagram'
+import GitHubIcon from '@material-ui/icons/GitHub'
 import FacebookIcon from '@material-ui/icons/Facebook'
 import TwitterIcon from '@material-ui/icons/Twitter'
 import useGlobalStyle from '../../styles/globalStyles'
 import Avatar from '@material-ui/core/Avatar'
 import Badge from '@material-ui/core/Badge'
 import NotificationsIcon from '@material-ui/icons/Notifications'
+import Divider from '@material-ui/core/Divider'
 
 const drawerWidth = 260
 
@@ -139,9 +140,9 @@ const useStyles = makeStyles((theme) => ({
   drawerBottonContainer: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     gap: '2rem',
-    paddingTop: '1.5rem'
+    padding: '16px 16px'
   },
   socialContainer: {
     display: 'flex',
@@ -243,7 +244,7 @@ const Menu: React.FC = ({ children }) => {
 
   const history = useHistory()
 
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
 
   const { user, setUser } = useContext(UserContext)
 
@@ -296,8 +297,8 @@ const Menu: React.FC = ({ children }) => {
         </Toolbar>
       </AppBar>
       <Drawer
-        onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)}
+        /*   onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)} */
         variant="permanent"
         className={clsx(classes.drawer, {
           [classes.drawerOpen]: open,
@@ -312,30 +313,40 @@ const Menu: React.FC = ({ children }) => {
       >
         <List className={classes.itemList}>
           {itemList.map((item) => (
-            <CollapseButton item={item} drawerOpen={open} setDrawerOpen={setOpen} />
+            <div>
+              <CollapseButton item={item} drawerOpen={open} setDrawerOpen={setOpen} />
+              <Divider variant="middle" />
+            </div>
           ))}
         </List>
-        <div className={classes.drawerBottonContainer}>
-          <div className={classes.colorModeContainer}>
-            {(open || isDark) && (
-              <IconButton disableRipple disableFocusRipple onClick={() => setIsDark(false)}>
-                <Icon color={isDark ? 'disabled' : 'primary'}>wb_sunny</Icon>
-              </IconButton>
-            )}
-            {open && <a>/</a>}
-            {(open || !isDark) && (
-              <IconButton disableRipple disableFocusRipple onClick={() => setIsDark(true)}>
-                <Icon color={isDark ? 'primary' : 'disabled'}>nightlight_round</Icon>
-              </IconButton>
+
+        <div>
+          {/*     <Divider variant="middle" /> */}
+          <div className={classes.drawerBottonContainer}>
+            <div className={classes.colorModeContainer}>
+              {(open || isDark) && (
+                <IconButton disableRipple disableFocusRipple onClick={() => setIsDark(false)}>
+                  <Icon color={isDark ? 'disabled' : 'primary'}>wb_sunny</Icon>
+                </IconButton>
+              )}
+              {open && <a>/</a>}
+              {(open || !isDark) && (
+                <IconButton disableRipple disableFocusRipple onClick={() => setIsDark(true)}>
+                  <Icon color={isDark ? 'primary' : 'disabled'}>nightlight_round</Icon>
+                </IconButton>
+              )}
+            </div>
+            {open && (
+              <div className={classes.socialContainer}>
+                <IconButton disableRipple disableFocusRipple onClick={() => setIsDark(false)}>
+                  <GitHubIcon />
+                </IconButton>
+                <IconButton href="www.google.com.ar" disableRipple disableFocusRipple onClick={() => setIsDark(false)}>
+                  <TwitterIcon />
+                </IconButton>
+              </div>
             )}
           </div>
-          {open && (
-            <div className={classes.socialContainer}>
-              <FacebookIcon />
-              <InstagramIcon />
-              <TwitterIcon />
-            </div>
-          )}
         </div>
       </Drawer>
       {children}
