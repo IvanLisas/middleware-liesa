@@ -19,14 +19,25 @@ const ThemeContextProvider: React.FC = ({ children }) => {
 
   const primaryColor = () => '#399ead' //Celeste
 
-  const secondaryColor = () => '#b565a2' //Rosa
+  const secondaryColor = () => '#399ead' //Rosa
+
+  /*   const primaryColor = () => '#b565a2' //Rosa  */
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const secondaryColor2 = () => '#e23f3f' //Naranja
 
   const theme = createMuiTheme({
     overrides: {
-      MuiGrid: {}
+      MuiPaper: {
+        elevation4: {
+          boxShadow: 'none'
+        }
+      },
+      MuiSvgIcon: {
+        root: {
+          /*  color: primaryColor() */
+        }
+      }
     }
   })
 
@@ -41,7 +52,7 @@ const ThemeContextProvider: React.FC = ({ children }) => {
         main: secondaryColor()
       },
       background: {
-        default: '#ede8ed',
+        default: 'rgba(250, 250, 250, 0.87)',
         paper: '#ffff'
       },
       text: {

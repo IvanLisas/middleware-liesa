@@ -1,25 +1,37 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 
+const appBarHeight = 65
+
+const paddingRoot = 18
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: ' flex',
     justifyContent: 'center',
-    alignItems: 'center',
+    /*   alignItems: 'center', */
     width: '100%',
     flexWrap: 'wrap',
-    padding: '65px 0px' //Tiene que depender del tamaño del nav
+    backgroundColor: theme.palette.background.default,
+    //Tiene que depender del tamaño del nav
+    /*  paddingTop: 65 */
+    padding: `${appBarHeight + paddingRoot}px ${paddingRoot}px ${paddingRoot}px ${paddingRoot}px`
   },
 
   box: {
+    /*  margin: 50, */
     backgroundColor: theme.palette.background.paper,
-    borderRadius: 20,
-    padding: 20,
+    borderRadius: 8,
+    padding: '8px 18px', //El top tendria que conicidor con el margenTop/paddingTop del menu
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    /*  gap: '4px', */
-    marginTop: 18 //Espacio entre el nav y el bOX
+    //Espacio entre el nav y el boX
+    /*     margin: '120px 60px 60px 60px', */
+    width: '100%',
+    /*   borderStyle: 'solid', */
+    /*     borderColor: 'red', */
+    boxShadow: '0px 0px 20px rgb(0 0 0 / 20%)'
   },
   backgroundImage: {
     position: 'absolute',

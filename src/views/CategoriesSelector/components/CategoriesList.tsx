@@ -46,6 +46,7 @@ const CategoriesList: React.FC<CategoriesListProps> = ({ categories, handleCateg
 
   return (
     <div className={classes.categoriesTable}>
+      {console.log(categories)}
       {categories.map((category) => (
         <Button className={classes.category} onClick={() => handleCategory(category)} color="primary">
           {category.name}

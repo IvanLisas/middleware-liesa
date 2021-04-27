@@ -17,7 +17,10 @@ import { ThemeContextDispatch } from '../../contexts/ThemeContext'
 import InstagramIcon from '@material-ui/icons/Instagram'
 import FacebookIcon from '@material-ui/icons/Facebook'
 import TwitterIcon from '@material-ui/icons/Twitter'
-import { globalStyles } from '../../styles/globalStyles'
+import useGlobalStyle from '../../styles/globalStyles'
+import Avatar from '@material-ui/core/Avatar'
+import Badge from '@material-ui/core/Badge'
+import NotificationsIcon from '@material-ui/icons/Notifications'
 
 const drawerWidth = 260
 
@@ -29,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column'
   },
   appBar: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.primary.main,
     borderBottom: '2px solid rgba(133, 133, 133, 0.1)',
     height: appBarHeight,
     position: 'fixed'
@@ -42,47 +45,26 @@ const useStyles = makeStyles((theme) => ({
     flexShrink: 0,
     whiteSpace: 'nowrap',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    paddingTop: 10,
+    justifyContent: 'space-between',
+    marginTop: appBarHeight,
+    backgroundColor: theme.palette.background.paper,
+    maxHeight: `calc(100% - ${appBarHeight}px)`,
+    overflowX: 'hidden',
+    boxShadow: '0px 0px 20px rgb(0 0 0 / 20%)'
   },
   drawerOpen: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    width: drawerWidth,
-    backgroundColor: theme.palette.background.paper,
-    marginTop: appBarHeight,
-    maxHeight: `calc(100% - ${appBarHeight}px)`,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen
-    }),
-    overflowX: 'hidden',
-    overflowY: 'scroll',
-    '&::-webkit-scrollbar': {
-      width: 8
-    },
-    '&::-webkit-scrollbar-track': {
-      boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
-      webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
-    },
-    '&::-webkit-scrollbar-thumb': {
-      backgroundColor: theme.palette.primary.main,
-      outline: '1px solid slategrey',
-      borderRadius: 7
-    }
+    })
   },
   drawerClose: {
-    justifyContent: 'space-between',
-    display: 'flex',
-    flexDirection: 'column',
-    marginTop: appBarHeight,
-    maxHeight: `calc(100% - ${appBarHeight}px)`,
-    backgroundColor: theme.palette.background.paper,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
     }),
-    overflowX: 'hidden',
     width: theme.spacing(7) + 1,
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(7) + 1
@@ -92,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     color: theme.palette.text.primary,
-    fontSize: '1.3rem'
+    boxShadow: '0px 0px 20px rgb(0 0 0 / 20%)'
   },
   content: {
     flexGrow: 1,
@@ -103,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: '8px'
   },
   icon: {
-    color: theme.palette.primary.main
+    color: 'white'
   },
   itemList: {
     /*     margin: '16px 0', */
@@ -128,17 +110,28 @@ const useStyles = makeStyles((theme) => ({
     marginRight: '0.5rem'
   },
   toolbarLeft: {
-    display: 'flex'
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
-  avatar: {
-    width: '25px',
-    height: '25px',
-    borderRadius: '50%'
+  toolbarRight: {
+    display: 'flex',
+    width: '12%',
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
+
   userContainer: {
     display: 'flex',
     gap: '8px',
-    alignItems: 'center'
+    alignItems: 'center',
+    color: 'white',
+    fontSize: '24px'
+  },
+  avatar: {
+    width: 36,
+    height: 36,
+    color: theme.palette.text.primary
   },
   colorModeContainer: {
     fontSize: '1rem'
@@ -246,13 +239,13 @@ const Menu: React.FC = ({ children }) => {
 
   const classes = useStyles()
 
+  const classesGlobal = useGlobalStyle()
+
   const history = useHistory()
 
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
 
   const { user, setUser } = useContext(UserContext)
-
-  const theme = useTheme()
 
   const { isDark, setIsDark } = useContext(ThemeContextDispatch)
 
@@ -284,28 +277,34 @@ const Menu: React.FC = ({ children }) => {
         <Toolbar className={classes.toolbar}>
           <div className={classes.toolbarLeft}>
             <IconButton onClick={handleDrawer} edge="start" className={clsx(classes.icon)}>
-              <Icon className={classes.icon}>widgets</Icon>
+              <Icon className={classes.icon}>menu_open</Icon>
             </IconButton>
-            <Button
-              size="large"
-              className={classes.logoContainer}
-              onClick={() => history.push('/home')}
-            >
+            <Button size="large" className={classes.logoContainer} onClick={() => history.push('/home')}>
               <img className={classes.logo} src={isDark ? logoNight : logoLight} />
               <img className={classes.logoLabel} src={isDark ? labelNight : labelLight} />
             </Button>
           </div>
-          <a>{user.username}</a>
+          <div className={classes.toolbarRight}>
+            <Badge badgeContent={4} color="secondary">
+              <NotificationsIcon className={classes.icon} />
+            </Badge>
+            <div className={classes.userContainer}>
+              <Avatar className={classes.avatar}>{user.username[0]}</Avatar>
+              {user.username}
+            </div>
+          </div>
         </Toolbar>
       </AppBar>
       <Drawer
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
         variant="permanent"
         className={clsx(classes.drawer, {
           [classes.drawerOpen]: open,
           [classes.drawerClose]: !open
         })}
         classes={{
-          paper: clsx({
+          paper: clsx(classes.drawer, classesGlobal.scrollbarStyles, {
             [classes.drawerOpen]: open,
             [classes.drawerClose]: !open
           })
