@@ -297,8 +297,8 @@ const Menu: React.FC = ({ children }) => {
         </Toolbar>
       </AppBar>
       <Drawer
-        /*   onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)} */
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
         variant="permanent"
         className={clsx(classes.drawer, {
           [classes.drawerOpen]: open,

@@ -174,7 +174,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell className={classes.tableHead} padding="checkbox">
+        <TableCell className={classes.tableHead} padding={'checkbox'}>
           {/*           <Checkbox
             color="default"
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -201,6 +201,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : 'asc'}
               onClick={createSortHandler(headCell.id)}
+              className={classes.headLabel}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
@@ -342,6 +343,9 @@ const useStyles = makeStyles((theme: Theme) =>
     checkbox: {
       color: 'white',
       backgroundColor: 'white'
+    },
+    headLabel: {
+      fontSize: '1rem'
     }
   })
 )
