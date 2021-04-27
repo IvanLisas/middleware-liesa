@@ -244,7 +244,7 @@ const Menu: React.FC = ({ children }) => {
 
   const history = useHistory()
 
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
 
   const { user, setUser } = useContext(UserContext)
 
