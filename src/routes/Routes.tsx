@@ -13,8 +13,8 @@ const Routes: React.FC = () => {
     <Router>
       {user && <Menu />}
       <Switch>
-        {user && <Route path="/home" component={DataTable} />}
         {user && <Route path="/mercadolibre/ruta1" component={CategoriesSelector} />}
+        {user && <Route path="/" component={DataTable} />}
         {!user && <Route path="/" component={Login} />}
       </Switch>
     </Router>
