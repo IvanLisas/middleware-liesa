@@ -15,6 +15,13 @@ const useGlobalStyle = makeStyles((theme) => ({
       outline: '1px solid slategrey',
       borderRadius: 7
     }
+  },
+  endButtonContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    gap: '12px',
+    marginTop: '12px'
   }
 }))
 

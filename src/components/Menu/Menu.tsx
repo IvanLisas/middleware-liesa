@@ -158,16 +158,11 @@ const useStyles = makeStyles((theme) => ({
 const Menu: React.FC = ({ children }) => {
   const itemList = [
     {
-      label: 'Productos',
+      label: 'Catalogo',
       logo: '/product-logo.png',
-      ruta: '/product',
+      ruta: '/catalog',
       open: false,
       children: [
-        {
-          label: 'Cargar producto',
-          ruta: '/form',
-          icon: 'upload'
-        },
         {
           label: 'Listar productos',
           ruta: '/show',

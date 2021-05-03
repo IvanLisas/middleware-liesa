@@ -1,18 +1,15 @@
-import React, { useState, useContext, ReactNode } from 'react'
+import React, { useState, useContext } from 'react'
 import { UserContext } from '../../contexts/UserContext'
 import { userService } from '../../services/UserService'
 import { useHistory } from 'react-router-dom'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
-import Avatar from '@material-ui/core/Avatar'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import TextField from '@material-ui/core/TextField'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import Link from '@material-ui/core/Link'
 import Grid from '@material-ui/core/Grid'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
 import { ThemeContextDispatch } from '../../contexts/ThemeContext'
 
@@ -54,43 +51,37 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const Login: React.FC = () => {
+  const labelLight = '/liesa-logo-login.png'
+
+  const labelNight = '/liesa-label-blanco.png'
+
+  const { isDark } = useContext(ThemeContextDispatch)
+
   const classes = useStyles()
 
   const history = useHistory()
 
-  const { user, setUser } = useContext(UserContext)
+  const { setUser } = useContext(UserContext)
 
   const [username, setUsername] = useState('')
 
   const [password, setPassword] = useState('')
 
-  const { isDark, setIsDark } = useContext(ThemeContextDispatch)
-
   /*   const { enqueueSnackbar } = useSnackbar() */
 
   const login = async () => {
-    /*     setUser(pepe)
-        console.log(setUser)
-        */
-    setUser(await userService.getUser())
-    history.push('/home')
+    try {
+      setUser(await userService.login(username, password))
+      history.push('/home')
+    } catch (error) {
+      console.log(error)
+    }
   }
 
-  const logoLight = '/liesa-logo-negro.png'
-
-  const labelLight = '/liesa-logo-login.png'
-
-  const logoNight = '/liesa-logo-blanco.png'
-
-  const labelNight = '/liesa-label-blanco.png'
-
-  /*  const onKeyPress = async (key) => key === 'Enter' ? await login() : null
-   */
   return (
     <Container className={classes.root} component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        {/*       <img className={classes.logo} src={isDark ? logoNight : logoLight} /> */}
         <img className={classes.logoLogin} src={isDark ? labelNight : labelLight} />
         <form className={classes.form} noValidate>
           <TextField
@@ -101,8 +92,8 @@ const Login: React.FC = () => {
             id="user"
             label="Usuario"
             name="user"
-            /*             autoComplete="email" */
             autoFocus
+            onChange={(event) => setUsername(event.target.value)}
           />
           <TextField
             variant="outlined"
@@ -114,6 +105,7 @@ const Login: React.FC = () => {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={(event) => setPassword(event.target.value)}
           />
           <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Recordar" />
           <Button
@@ -132,11 +124,6 @@ const Login: React.FC = () => {
                 Olvido su contraseña?
               </Link>
             </Grid>
-            {/*             <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid> */}
           </Grid>
         </form>
       </div>

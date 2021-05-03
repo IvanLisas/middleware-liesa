@@ -16,6 +16,9 @@ import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
 import { ThemeContextDispatch } from '../../contexts/ThemeContext'
 import MyBox from '../../components/MyBox'
+import useGlobalStyle from '../../styles/globalStyles'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme: Theme) =>
@@ -26,19 +29,40 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const ProductForm: React.FC = () => {
   const classes = useStyles()
+  const classesGlobal = useGlobalStyle()
+  const history = useHistory()
+
+  const [value, setValue] = React.useState('Mercadolibre')
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue((event.target as HTMLInputElement).value)
+  }
+
+  const goHome = () => {
+    history.push('/home')
+  }
 
   return (
     <MyBox>
-      <form className={classes.form} noValidate>
-        <TextField variant="outlined" margin="normal" required id="name" label="Nombre" autoFocus />
-        <TextField variant="outlined" margin="normal" required name="brand" label="Marca" id="brnd" />
-
-        <Button type="submit" fullWidth variant="contained" color="primary">
-          Guardar
-        </Button>
-        <Button type="submit" fullWidth variant="contained" color="secondary">
-          Cancelar
-        </Button>
+      Producto
+      <form className={classes.form}>
+        <TextField variant="outlined" margin="normal" required fullWidth id="name" label="Nombre" autoFocus />
+        <TextField variant="outlined" margin="normal" required fullWidth name="brand" label="Marca" id="brnd" />
+        <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
+          <FormControlLabel value="mercadolibre" control={<Radio />} label="Female" />
+          <FormControlLabel value="tiendanube" control={<Radio />} label="Male" />
+          <FormControlLabel value="googlesho" control={<Radio />} label="Other" />
+          <FormControlLabel value="magento" control={<Radio />} label="Other" />
+          <FormControlLabel value="disabled" disabled control={<Radio />} label="(Disabled option)" />
+        </RadioGroup>
+        <div className={classesGlobal.endButtonContainer}>
+          <Button onClick={goHome} type="submit" variant="contained" color="primary">
+            Guardar
+          </Button>
+          <Button onClick={goHome} variant="contained" color="secondary">
+            Cancelar
+          </Button>
+        </div>
       </form>
     </MyBox>
   )
