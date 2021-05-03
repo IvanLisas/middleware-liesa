@@ -12,7 +12,7 @@ class ProductService {
   async getProducts() {
     const productsJSON = await axios.get(`${SERVER_URL}/products`)
     console.log(productsJSON.data as Product)
-    return productsJSON.data as Product
+    return productsJSON.data as Product[]
   }
 }
 

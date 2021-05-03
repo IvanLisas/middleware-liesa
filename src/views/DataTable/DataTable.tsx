@@ -9,12 +9,13 @@ import Switch from '@material-ui/core/Switch'
 import MyBox from '../../components/MyBox'
 import MyTableBody from './Components/MyTableBody'
 import useGlobalStyle from '../../styles/globalStyles'
-import { Data } from '../../types/Data'
+import createData, { Data } from '../../types/Data'
 import { productService } from '../../services/ProductService'
 import EnhancedTableToolbar from './Components/EnhancedTableToolbar'
 import clsx from 'clsx'
 import { Order } from '../../types/Order'
 import EnhancedTableHead from './Components/EnhancedTableHead'
+import { Product } from '../../types/Product'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme: Theme) =>
@@ -104,8 +105,26 @@ const DataTable: React.FC = () => {
 
   useEffect(() => {
     const getProducts = async () => {
-      console.log(await productService.getProducts())
-      setRows([...productService.getProductsMock()]), []
+      const productsMock = productService.getProductsMock()
+      setRows([...productsMock])
+      let products: Product[] = []
+      try {
+        products = await productService.getProducts()
+      } catch (error) {
+        console.log(error)
+      }
+      const productsTransformerd = products.map((product) =>
+        createData(
+          product.sku,
+          product.name,
+          product.brand.name,
+          product.activeMarketPlaces[0],
+          product.filledDataProgress,
+          product.stock
+        )
+      )
+      setRows([...productsTransformerd])
+      setRows([...productsMock])
     }
     getProducts()
   }, [])

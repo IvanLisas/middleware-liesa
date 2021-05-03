@@ -107,9 +107,6 @@ const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
                 {row.marca}
               </TableCell>
               <TableCell className={classes.tableCell} align="right">
-                ${row.precio}
-              </TableCell>
-              <TableCell className={classes.tableCell} align="right">
                 {row.stock}
               </TableCell>
               <TableCell align="right">
@@ -119,7 +116,7 @@ const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
                 <MyChip progress={row.progreso} />
               </TableCell>
               <TableCell className={classes.market} align="left">
-                <img className={classes.itemLogo} src={row.tienda} />
+                <img className={classes.itemLogo} src={marketMap.get(row.tienda)} />
               </TableCell>
             </TableRow>
           )
@@ -132,5 +129,12 @@ const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
     </TableBody>
   )
 }
+
+const marketMap = new Map([
+  ['mercadolibre', '/mercadolibre-logo.png'],
+  ['magento', '/magento-logo.png'],
+  ['googleshopping', '/googleshopping-logo.png'],
+  ['tiendanube', '/tiendanube-logo.png']
+])
 
 export default MyTableBody

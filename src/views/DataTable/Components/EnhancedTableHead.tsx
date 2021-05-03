@@ -52,7 +52,6 @@ const headCells: HeadCell[] = [
   { id: 'sku', numeric: true, disablePadding: true, label: 'SKU' },
   { id: 'nombre', numeric: false, disablePadding: false, label: 'Nombre' },
   { id: 'marca', numeric: false, disablePadding: false, label: 'Marca' },
-  { id: 'precio', numeric: true, disablePadding: false, label: 'Precio' },
   { id: 'stock', numeric: true, disablePadding: false, label: 'Stock' },
   { id: 'progreso', numeric: false, disablePadding: false, label: 'Progreso' },
   { id: 'progreso', numeric: false, disablePadding: false, label: 'Estado' },

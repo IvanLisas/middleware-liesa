@@ -30,27 +30,9 @@ const ProductForm: React.FC = () => {
   return (
     <MyBox>
       <form className={classes.form} noValidate>
-        <TextField
-          /*     variant="outlined" */
-          margin="normal"
-          required
-          fullWidth
-          id="user"
-          label="Usuario"
-          name="user"
-          autoFocus
-        />
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Contraseña"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-        />
+        <TextField variant="outlined" margin="normal" required id="name" label="Nombre" autoFocus />
+        <TextField variant="outlined" margin="normal" required name="brand" label="Marca" id="brnd" />
+
         <Button type="submit" fullWidth variant="contained" color="primary">
           Guardar
         </Button>
