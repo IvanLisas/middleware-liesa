@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       display: 'flex',
       flexDirection: 'column',
-      gap: 24,
+      gap: 32,
       minWidth: 550,
       padding: 24
     },
@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme: Theme) =>
     sub1: {
       display: 'flex',
       flexDirection: 'column',
-      gap: 24,
+      gap: 32,
       justifyContent: 'space-between'
     },
     logoLabel: {
