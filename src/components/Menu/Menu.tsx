@@ -25,7 +25,7 @@ import Divider from '@material-ui/core/Divider'
 
 const drawerWidth = 260
 
-const appBarHeight = 65
+const appBarHeight = 59
 
 const useStyles = makeStyles((theme) => ({
   root: {
