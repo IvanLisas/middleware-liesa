@@ -8,6 +8,7 @@ import MyChip from './MyChip'
 import MyLinearProgress from './MyLinearProgress'
 import { Data } from '../../../types/Data'
 import { Order } from '../../../types/Order'
+import { Link } from '@material-ui/core'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme: Theme) =>
@@ -68,6 +69,7 @@ interface MyTableBodyProps {
   rowsPerPage: number
   isSelected: (value: number) => boolean
   handleClick: (event: React.MouseEvent<unknown>, sku: number) => void
+  handleClickCheckBox: (event: React.MouseEvent<unknown>, sku: number) => void
   emptyRows: number
   dense: boolean
 }
@@ -75,7 +77,18 @@ interface MyTableBodyProps {
 const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
   const classes = useStyles()
 
-  const { rows, order, orderBy, page, rowsPerPage, isSelected, handleClick, emptyRows, dense } = props
+  const {
+    rows,
+    order,
+    orderBy,
+    page,
+    rowsPerPage,
+    isSelected,
+    handleClick,
+    handleClickCheckBox,
+    emptyRows,
+    dense
+  } = props
 
   return (
     <TableBody>
@@ -95,14 +108,26 @@ const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
               selected={isItemSelected}
             >
               <TableCell className={classes.tableCell} padding="checkbox">
-                <Checkbox checked={isItemSelected} inputProps={{ 'aria-labelledby': labelId }} />
+                <Checkbox
+                  onClick={(event) => handleClickCheckBox(event, row.sku)}
+                  checked={isItemSelected}
+                  inputProps={{ 'aria-labelledby': labelId }}
+                />
               </TableCell>
               <TableCell className={classes.tableCell} align="right" id={labelId}>
                 {row.sku}
               </TableCell>
               <TableCell className={classes.tableCell} size="medium" align="left">
-                {row.nombre}
+                {/*                 <Link style={{ cursor: 'pointer', color: 'none' }} onClick={(event) => handleClick(event, row.id)}>
+                  {row.nombre} 
+                </Link>*/}
+                <a style={{ cursor: 'pointer' }} onClick={(event) => handleClick(event, row.id)}>
+                  {row.nombre}
+                </a>
               </TableCell>
+              {/*               <a style={{ cursor: 'pointer' }} onClick={(event) => handleClick(event, row.id)}>
+                  {row.nombre}
+                </a> */}
               <TableCell className={classes.tableCell} align="left">
                 {row.marca}
               </TableCell>
@@ -116,7 +141,10 @@ const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
                 <MyChip progress={row.progreso} />
               </TableCell>
               <TableCell className={classes.market} align="left">
-                <img className={classes.itemLogo} src={marketMap.get(row.tienda)} />
+                <img
+                  className={classes.itemLogo}
+                  src={marketMap.get(row.tienda) ? marketMap.get(row.tienda) : '/mercadolibre-logo.png'}
+                />
               </TableCell>
             </TableRow>
           )
@@ -131,10 +159,10 @@ const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
 }
 
 const marketMap = new Map([
-  ['mercadolibre', '/mercadolibre-logo.png'],
-  ['magento', '/magento-logo.png'],
-  ['googleshopping', '/googleshopping-logo.png'],
-  ['tiendanube', '/tiendanube-logo.png']
+  ['Mercadolibre', '/mercadolibre-logo.png'],
+  ['Magento', '/magento-logo.png'],
+  ['GoogleShops', '/googleshopping-logo.png'],
+  ['Tiendanube', '/tiendanube-logo.png']
 ])
 
 export default MyTableBody

@@ -16,6 +16,8 @@ import clsx from 'clsx'
 import { Order } from '../../types/Order'
 import EnhancedTableHead from './Components/EnhancedTableHead'
 import { Product } from '../../types/Product'
+import { useHistory } from 'react-router-dom'
+import { useSnackbar } from 'notistack'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme: Theme) =>
@@ -54,6 +56,8 @@ const DataTable: React.FC = () => {
   const [dense, setDense] = useState(true)
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [rows, setRows] = useState<Data[]>([])
+  const history = useHistory()
+  const { enqueueSnackbar } = useSnackbar()
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
     const isAsc = orderBy === property && order === 'asc'
@@ -70,7 +74,16 @@ const DataTable: React.FC = () => {
     setSelected([])
   }
 
-  const handleClick = (event: React.MouseEvent<unknown>, sku: number) => {
+  const handleClick = async (event: React.MouseEvent<unknown>, id: number) => {
+    try {
+      await productService.getProduct(id)
+      history.push('/productDetail/' + id)
+    } catch (error) {
+      enqueueSnackbar('Error al obtener el producto, vuelva a intentarlo', { variant: 'error' })
+    }
+  }
+
+  const handleClickCheckBox = (event: React.MouseEvent<unknown>, sku: number) => {
     const selectedIndex = selected.indexOf(sku)
     let newSelected: number[] = []
 
@@ -105,16 +118,18 @@ const DataTable: React.FC = () => {
 
   useEffect(() => {
     const getProducts = async () => {
-      const productsMock = productService.getProductsMock()
-      setRows([...productsMock])
+      /*       const productsMock = productService.getProductsMock()
+      setRows([...productsMock]) */
       let products: Product[] = []
       try {
         products = await productService.getProducts()
       } catch (error) {
         console.log(error)
+        enqueueSnackbar('Error')
       }
       const productsTransformerd = products.map((product) =>
         createData(
+          product.id,
           product.sku,
           product.name,
           product.brand.name,
@@ -124,7 +139,6 @@ const DataTable: React.FC = () => {
         )
       )
       setRows([...productsTransformerd])
-      setRows([...productsMock])
     }
     getProducts()
   }, [])
@@ -157,6 +171,7 @@ const DataTable: React.FC = () => {
                 rowsPerPage={rowsPerPage}
                 isSelected={isSelected}
                 handleClick={handleClick}
+                handleClickCheckBox={handleClickCheckBox}
                 emptyRows={emptyRows}
                 dense={dense}
               />

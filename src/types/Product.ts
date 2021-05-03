@@ -1,5 +1,5 @@
-import createBrand, { Brand } from './Brand'
-import createCategory, { Category } from './Category'
+import { Brand } from './Brand'
+import { Category } from './Category'
 
 export type Product = {
   id: number

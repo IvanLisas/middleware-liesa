@@ -1,4 +1,5 @@
 export type Data = {
+  id: number
   sku: number
   nombre: string
   marca: string
@@ -8,6 +9,7 @@ export type Data = {
 }
 
 export default function createData(
+  id: number,
   sku: number,
   nombre: string,
   marca: string,
@@ -15,5 +17,5 @@ export default function createData(
   progreso: number,
   stock: number
 ): Data {
-  return { sku, nombre, marca, tienda, progreso, stock }
+  return { id, sku, nombre, marca, tienda, progreso, stock }
 }
