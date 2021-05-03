@@ -12,6 +12,7 @@ import Link from '@material-ui/core/Link'
 import Grid from '@material-ui/core/Grid'
 import Container from '@material-ui/core/Container'
 import { ThemeContextDispatch } from '../../contexts/ThemeContext'
+import { useSnackbar } from 'notistack'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -67,7 +68,7 @@ const Login: React.FC = () => {
 
   const [password, setPassword] = useState('')
 
-  /*   const { enqueueSnackbar } = useSnackbar() */
+  const { enqueueSnackbar } = useSnackbar()
 
   const login = async () => {
     try {
@@ -75,6 +76,7 @@ const Login: React.FC = () => {
       history.push('/home')
     } catch (error) {
       console.log(error)
+      enqueueSnackbar('Error al ingresar ver consola', { variant: 'error' })
     }
   }
 
@@ -108,14 +110,7 @@ const Login: React.FC = () => {
             onChange={(event) => setPassword(event.target.value)}
           />
           <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Recordar" />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={login}
-          >
+          <Button fullWidth variant="contained" color="primary" className={classes.submit} onClick={login}>
             Ingresar
           </Button>
           <Grid container>

@@ -5,14 +5,17 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import UserContextProvider from './contexts/UserContext'
 import ThemeContextProvider from './contexts/ThemeContext'
+import SnackBarProvider from './contexts/SnackBarContext'
 
 ReactDOM.render(
   //TODO: Hacer un provider general
   <React.StrictMode>
     <ThemeContextProvider>
-      <UserContextProvider>
-        <App />
-      </UserContextProvider>
+      <SnackBarProvider>
+        <UserContextProvider>
+          <App />
+        </UserContextProvider>
+      </SnackBarProvider>
     </ThemeContextProvider>
   </React.StrictMode>,
   document.getElementById('root')
