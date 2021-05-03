@@ -5,6 +5,7 @@ import Login from '../views/Login/Login'
 import { UserContext } from '../contexts/UserContext'
 import Menu from '../components/Menu/Menu'
 import CategoriesSelector from '../views/CategoriesSelector/CategoriesSelector'
+import ProductForm from '../views/ProductForm/ProductForm'
 
 const Routes: React.FC = () => {
   const { user } = useContext(UserContext)
@@ -14,6 +15,7 @@ const Routes: React.FC = () => {
       {user && <Menu />}
       <Switch>
         {user && <Route path="/mercadolibre/ruta1" component={CategoriesSelector} />}
+        {user && <Route path="/product/form" component={ProductForm} />}
         {user && <Route path="/" component={DataTable} />}
         {!user && <Route path="/" component={Login} />}
       </Switch>

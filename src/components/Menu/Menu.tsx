@@ -66,9 +66,9 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
     }),
-    width: theme.spacing(7) + 1,
+    width: theme.spacing(8) + 1,
     [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(7) + 1
+      width: theme.spacing(8)
     }
   },
   toolbar: {
@@ -117,7 +117,7 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbarRight: {
     display: 'flex',
-    width: '12%',
+    width: '14%',
     alignItems: 'center',
     justifyContent: 'space-between'
   },
@@ -148,12 +148,38 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: '12px'
+    gap: '16px'
+  },
+  notications: {
+    padding: 24
   }
 }))
 
 const Menu: React.FC = ({ children }) => {
   const itemList = [
+    {
+      label: 'Productos',
+      logo: '/product-logo.png',
+      ruta: '/product',
+      open: false,
+      children: [
+        {
+          label: 'Cargar producto',
+          ruta: '/form',
+          icon: 'upload'
+        },
+        {
+          label: 'Listar productos',
+          ruta: '/show',
+          icon: 'list'
+        },
+        {
+          label: 'Configuracion',
+          ruta: '/ruta2',
+          icon: 'settings'
+        }
+      ]
+    },
     {
       label: 'Mercadolibre',
       logo: 'mercadolibre-logo.png',
@@ -286,9 +312,11 @@ const Menu: React.FC = ({ children }) => {
             </Button>
           </div>
           <div className={classes.toolbarRight}>
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon className={classes.icon} />
-            </Badge>
+            <div className={classes.notications}>
+              <Badge badgeContent={4} color="secondary">
+                <NotificationsIcon className={classes.icon} />
+              </Badge>
+            </div>
             <div className={classes.userContainer}>
               <Avatar className={classes.avatar}>{user.username[0]}</Avatar>
               {user.username}
@@ -338,10 +366,20 @@ const Menu: React.FC = ({ children }) => {
             </div>
             {open && (
               <div className={classes.socialContainer}>
-                <IconButton disableRipple disableFocusRipple onClick={() => setIsDark(false)}>
+                <IconButton
+                  disableRipple
+                  disableFocusRipple
+                  onClick={() => window.open('https://gitlab.com/liesa/middleware/webapp')}
+                >
                   <GitHubIcon />
                 </IconButton>
-                <IconButton href="www.google.com.ar" disableRipple disableFocusRipple onClick={() => setIsDark(false)}>
+                <IconButton
+                  color="primary"
+                  href="www.google.com.ar"
+                  disableRipple
+                  disableFocusRipple
+                  onClick={() => setIsDark(false)}
+                >
                   <TwitterIcon />
                 </IconButton>
               </div>

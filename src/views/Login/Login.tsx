@@ -4,44 +4,51 @@ import { userService } from '../../services/UserService'
 import { useHistory } from 'react-router-dom'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
-/* import showError from '../../Errors/Error'
-import { useSnackbar } from 'notistack' */
+import Avatar from '@material-ui/core/Avatar'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import TextField from '@material-ui/core/TextField'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Checkbox from '@material-ui/core/Checkbox'
+import Link from '@material-ui/core/Link'
+import Grid from '@material-ui/core/Grid'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import Typography from '@material-ui/core/Typography'
+import Container from '@material-ui/core/Container'
+import { ThemeContextDispatch } from '../../contexts/ThemeContext'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      borderRadius: 20,
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      gap: '4px',
-      width: '100%'
+      /*     justifyContent: 'center', */
+      alignItems: 'center'
+    },
+    paper: {
+      marginTop: theme.spacing(8),
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    form: {
+      width: '100%', // Fix IE 11 issue.
+      marginTop: theme.spacing(1)
+    },
+    submit: {
+      margin: theme.spacing(3, 0, 2)
     },
     logo: {
       width: '9rem',
       height: '9rem'
     },
-    buttonContainer: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '8px'
+    logoLabel: {
+      width: '150px',
+      height: '18px',
+      marginRight: '0.5rem'
     },
-    button: {
-      borderRadius: '16px',
-      /* backgroundColor:  theme.palette.secondary.main, */
-      outline: '0px',
-      /*     fontWeight: '500', */
-      cursor: 'pointer',
-      border: 'none',
-      color: theme.palette.text.secondary,
-      textTransform: 'none',
-      width: '100%'
-    },
-    inputContainer: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '4px'
+    logoLogin: {
+      width: '60%'
     }
   })
 )
@@ -57,6 +64,8 @@ const Login: React.FC = () => {
 
   const [password, setPassword] = useState('')
 
+  const { isDark, setIsDark } = useContext(ThemeContextDispatch)
+
   /*   const { enqueueSnackbar } = useSnackbar() */
 
   const login = async () => {
@@ -67,15 +76,71 @@ const Login: React.FC = () => {
     history.push('/home')
   }
 
+  const logoLight = '/liesa-logo-negro.png'
+
+  const labelLight = '/liesa-logo-login.png'
+
+  const logoNight = '/liesa-logo-blanco.png'
+
+  const labelNight = '/liesa-label-blanco.png'
+
   /*  const onKeyPress = async (key) => key === 'Enter' ? await login() : null
    */
   return (
-    <div>
-      {' '}
-      login
-      {console.log(user)}
-      <Button onClick={login}>Login</Button>
-    </div>
+    <Container className={classes.root} component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        {/*       <img className={classes.logo} src={isDark ? logoNight : logoLight} /> */}
+        <img className={classes.logoLogin} src={isDark ? labelNight : labelLight} />
+        <form className={classes.form} noValidate>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="user"
+            label="Usuario"
+            name="user"
+            /*             autoComplete="email" */
+            autoFocus
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Contraseña"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+          />
+          <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Recordar" />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            onClick={login}
+          >
+            Ingresar
+          </Button>
+          <Grid container>
+            <Grid item xs>
+              <Link href="#" variant="body2">
+                Olvido su contraseña?
+              </Link>
+            </Grid>
+            {/*             <Grid item>
+              <Link href="#" variant="body2">
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid> */}
+          </Grid>
+        </form>
+      </div>
+    </Container>
   )
 }
 

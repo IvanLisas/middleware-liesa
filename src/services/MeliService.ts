@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { SERVER_URL } from '../config/Rest'
-import { CategotyType } from '../types/CategotyType'
+import { CategoryMeli } from '../types/CategoryMeli'
 
 class MeliService {
   axiosConfig = {
@@ -18,7 +18,7 @@ class MeliService {
       categoriesJSON = response.data.children_categories
     })
 
-    return categoriesJSON as CategotyType[]
+    return categoriesJSON as CategoryMeli[]
   }
 
   async getGategories() {
@@ -29,7 +29,7 @@ class MeliService {
       console.log(categoriesJSON)
     })
 
-    return categoriesJSON as CategotyType[]
+    return categoriesJSON as CategoryMeli[]
   }
 }
 

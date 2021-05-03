@@ -19,7 +19,7 @@ const ThemeContextProvider: React.FC = ({ children }) => {
 
   const primaryColor = () => '#399ead' //Celeste
 
-  const secondaryColor = () => '#399ead' //Rosa
+  const secondaryColor = () => '#b565a2' //Rosa
 
   /*   const primaryColor = () => '#b565a2' //Rosa  */
 
@@ -30,12 +30,14 @@ const ThemeContextProvider: React.FC = ({ children }) => {
     overrides: {
       MuiPaper: {
         elevation4: {
-          boxShadow: 'none'
+          //Shadow box de la tool bar
+          //boxShadow: 'none'
         }
       },
       MuiSvgIcon: {
         root: {
-          /*  color: primaryColor() */
+          //Checkbox color
+          //  color: primaryColor()
         }
       }
     }
@@ -56,9 +58,9 @@ const ThemeContextProvider: React.FC = ({ children }) => {
         paper: '#ffff'
       },
       text: {
-        primary: 'rgba(0, 0, 0, 0.87)',
+        primary: '#18696e', //rgba(0, 0, 0, 0.87)
         secondary: 'rgba(0, 0, 0, 0.54)',
-        disabled: 'gba(255, 255, 255, 0.5)'
+        disabled: 'rgba(0, 0, 0, 0.38)'
       }
     }
   })
@@ -79,8 +81,8 @@ const ThemeContextProvider: React.FC = ({ children }) => {
       },
       text: {
         primary: '#ffff',
-        secondary: '#ffff',
-        disabled: '#ffff'
+        secondary: 'rgba(255, 255, 255, 0.7)',
+        disabled: 'rgba(255, 255, 255, 0.5)'
       }
     }
   })

@@ -1,6 +1,6 @@
 import React from 'react'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
-import { CategotyType } from '../../../types/CategotyType'
+import { CategoryMeli } from '../../../types/CategoryMeli'
 import { Button } from '@material-ui/core'
 /* import { useSnackbar } from 'notistack' */
 
@@ -37,8 +37,8 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 interface CategoriesListProps {
-  readonly categories: CategotyType[]
-  readonly handleCategory: (category: CategotyType) => void
+  readonly categories: CategoryMeli[]
+  readonly handleCategory: (category: CategoryMeli) => void
 }
 
 const CategoriesList: React.FC<CategoriesListProps> = ({ categories, handleCategory }) => {

@@ -6,7 +6,7 @@ import MyBox from '../../components/MyBox'
 import { meliService } from '../../services/MeliService'
 import MyBreadcrums from './components/MyBreadcrums'
 import { useHistory } from 'react-router-dom'
-import { CategotyType } from '../../types/CategotyType'
+import { CategoryMeli } from '../../types/CategoryMeli'
 import { Button } from '@material-ui/core'
 import CategoriesList from './components/CategoriesList'
 /* import { useSnackbar } from 'notistack' */
@@ -18,11 +18,11 @@ const CategoriesSelector: React.FC = () => {
 
   const history = useHistory() */
 
-  const [categories, setCategories] = useState<CategotyType[]>([])
+  const [categories, setCategories] = useState<CategoryMeli[]>([])
 
   const [routes, setRoutes] = useState<string[]>(['hola', 'hola2'])
 
-  const handleCategory = async (category: CategotyType) => {
+  const handleCategory = async (category: CategoryMeli) => {
     setCategories(await meliService.getGategory(category.id))
     setRoutes([...routes, category.name])
   }

@@ -1,9 +1,9 @@
 import React, { createContext, useState } from 'react'
-import { UserType } from '../types/UserType'
+import { User } from '../types/User'
 
 interface ContextProps {
-  readonly user: UserType | null
-  readonly setUser: (user: UserType | null) => void
+  readonly user: User | null
+  readonly setUser: (user: User | null) => void
 }
 
 export const UserContext = createContext<ContextProps>({
@@ -12,7 +12,7 @@ export const UserContext = createContext<ContextProps>({
 })
 
 const UserContextProvider: React.FC = ({ children }) => {
-  const [user, setUser] = useState<UserType | null>({ id: 1, username: 'Iván' })
+  const [user, setUser] = useState<User | null>(null)
 
   return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>
 }
