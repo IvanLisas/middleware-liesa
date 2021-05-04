@@ -100,7 +100,7 @@ const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
           return (
             <TableRow
               hover
-              onClick={(event) => handleClick(event, row.sku)}
+              /*    onClick={(event) => handleClick(event, row.sku)} */
               role="checkbox"
               aria-checked={isItemSelected}
               tabIndex={-1}
