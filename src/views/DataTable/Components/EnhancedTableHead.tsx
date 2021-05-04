@@ -55,7 +55,7 @@ const headCells: HeadCell[] = [
   { id: 'stock', numeric: true, disablePadding: false, label: 'Stock' },
   { id: 'progreso', numeric: false, disablePadding: false, label: 'Progreso' },
   { id: 'progreso', numeric: false, disablePadding: false, label: 'Estado' },
-  { id: 'tienda', numeric: false, disablePadding: false, label: 'Tienda' }
+  { id: 'tienda', numeric: false, disablePadding: false, label: 'Tiendas  ' }
 ]
 
 interface EnhancedTableProps {

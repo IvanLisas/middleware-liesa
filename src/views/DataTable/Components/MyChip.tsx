@@ -25,6 +25,7 @@ interface MyChipProps {
 }
 
 const MyChip: React.FC<MyChipProps> = ({ progress }) => {
+  const iconSize = 24
   const [chipType, setChipType] = useState<ChipProps>(warningChip)
 
   useEffect(() => {
@@ -36,13 +37,15 @@ const MyChip: React.FC<MyChipProps> = ({ progress }) => {
   }, [])
 
   return (
-    <Chip
-      variant="outlined"
-      style={{ padding: 3, color: chipType.color, borderColor: chipType.color }}
-      label={chipType.label}
-      size="small"
-      icon={<Icon style={{ color: chipType.color }}>{chipType.icon}</Icon>}
-    />
+    <div style={{ minWidth: 130 }}>
+      <Chip
+        variant="outlined"
+        style={{ padding: 3, color: chipType.color, borderColor: chipType.color }}
+        label={chipType.label}
+        size="small"
+        icon={<Icon style={{ color: chipType.color, width: iconSize, height: iconSize }}>{chipType.icon}</Icon>}
+      />
+    </div>
   )
 }
 

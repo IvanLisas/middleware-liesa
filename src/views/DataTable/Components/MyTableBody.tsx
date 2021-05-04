@@ -8,7 +8,7 @@ import MyChip from './MyChip'
 import MyLinearProgress from './MyLinearProgress'
 import { Data } from '../../../types/Data'
 import { Order } from '../../../types/Order'
-import { Link } from '@material-ui/core'
+import Markets from './Markets'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme: Theme) =>
@@ -26,8 +26,8 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingLeft: 50 */
     },
     market: {
-      paddingRight: 0,
-      paddingLeft: 30
+      /*      paddingRight: 30, */
+      /*    paddingLeft: 30 */
     }
   })
 )
@@ -42,10 +42,10 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   return 0
 }
 
-export function getComparator<Key extends keyof number | string>(
+export function getComparator<Key extends keyof number | string | symbol>(
   order: Order,
   orderBy: Key
-): (a: { [key in Key]: number | string }, b: { [key in Key]: number | string }) => number {
+): (a: { [key in Key]: number | string | string[] }, b: { [key in Key]: number | string | string[] }) => number {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy)
@@ -141,10 +141,7 @@ const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
                 <MyChip progress={row.progreso} />
               </TableCell>
               <TableCell className={classes.market} align="left">
-                <img
-                  className={classes.itemLogo}
-                  src={marketMap.get(row.tienda) ? marketMap.get(row.tienda) : '/mercadolibre-logo.png'}
-                />
+                <Markets markets={row.tienda} />
               </TableCell>
             </TableRow>
           )
@@ -157,12 +154,5 @@ const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
     </TableBody>
   )
 }
-
-const marketMap = new Map([
-  ['Mercadolibre', '/mercadolibre-logo.png'],
-  ['Magento', '/magento-logo.png'],
-  ['GoogleShops', '/googleshopping-logo.png'],
-  ['Tiendanube', '/tiendanube-logo.png']
-])
 
 export default MyTableBody

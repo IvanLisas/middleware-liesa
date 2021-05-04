@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     paper: {
       width: '100%',
+      minWidth: 1000,
       boxShadow: 'none',
       flexWrap: 'wrap',
       display: 'flex',
@@ -118,14 +119,14 @@ const DataTable: React.FC = () => {
 
   useEffect(() => {
     const getProducts = async () => {
-      /*       const productsMock = productService.getProductsMock()
-      setRows([...productsMock]) */
+      const productsMock = productService.getProductsMock()
+      setRows([...productsMock])
       let products: Product[] = []
       try {
         products = await productService.getProducts()
       } catch (error) {
         console.log(error)
-        enqueueSnackbar('Error')
+        enqueueSnackbar('Error al conectar con el servidor')
       }
       const productsTransformerd = products.map((product) =>
         createData(
@@ -133,7 +134,7 @@ const DataTable: React.FC = () => {
           product.sku,
           product.name,
           product.brand.name,
-          product.activeMarketPlaces[0],
+          product.activeMarketPlaces,
           product.filledDataProgress,
           product.stock
         )

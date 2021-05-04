@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
     }),
     width: theme.spacing(7) + 1,
     [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(7)
+      width: theme.spacing(7) + 1
     }
   },
   toolbar: {

@@ -13,7 +13,7 @@ class ProductService {
   }
 
   async getProducts() {
-    const productsJSON = await axios.get(`${SERVER_URL}/api/catalog/products`)
+    const productsJSON = await axios.get(`${SERVER_URL}/api/catalog/Products`)
     console.log(productsJSON.data as Product[])
     return productsJSON.data as Product[]
   }
