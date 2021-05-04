@@ -119,8 +119,8 @@ const DataTable: React.FC = () => {
 
   useEffect(() => {
     const getProducts = async () => {
-      const productsMock = productService.getProductsMock()
-      setRows([...productsMock])
+      /*       const productsMock = productService.getProductsMock()
+      setRows([...productsMock]) */
       let products: Product[] = []
       try {
         products = await productService.getProducts()
