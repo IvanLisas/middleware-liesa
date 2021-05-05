@@ -18,6 +18,7 @@ import EnhancedTableHead from './Components/EnhancedTableHead'
 import { Product } from '../../types/Product'
 import { useHistory } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme: Theme) =>
@@ -58,6 +59,7 @@ const DataTable: React.FC = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [rows, setRows] = useState<Data[]>([])
   const history = useHistory()
+  const [loading, setLoading] = useState(true)
   const { enqueueSnackbar } = useSnackbar()
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
@@ -124,9 +126,10 @@ const DataTable: React.FC = () => {
       let products: Product[] = []
       try {
         products = await productService.getProducts()
+        setLoading(false)
       } catch (error) {
         console.log(error)
-        enqueueSnackbar('Error al conectar con el servidor')
+        enqueueSnackbar('Error al conectar con el servidor: ' + error.message, { variant: 'error' })
       }
       const productsTransformerd = products.map((product) =>
         createData(
@@ -164,6 +167,11 @@ const DataTable: React.FC = () => {
                 onRequestSort={handleRequestSort}
                 rowCount={rows.length}
               />
+              {/*               {loading && (
+                <div>
+                  <CircularProgress />
+                </div>
+              )} */}
               <MyTableBody
                 rows={rows}
                 order={order}

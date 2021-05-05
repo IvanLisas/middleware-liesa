@@ -20,8 +20,7 @@ const useGlobalStyle = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    gap: '12px',
-    marginTop: '12px'
+    gap: '8px'
   }
 }))
 

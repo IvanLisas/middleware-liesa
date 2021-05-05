@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       display: 'flex',
       flexDirection: 'column',
-      gap: 32,
+      gap: 24,
       minWidth: 550,
       padding: 24
     },
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     row: {
       display: 'flex',
-      gap: 16,
+      gap: 8,
       alignItems: 'flex-end'
     },
 
@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme: Theme) =>
     sub1: {
       display: 'flex',
       flexDirection: 'column',
-      gap: 32,
+      gap: 24,
       justifyContent: 'space-between'
     },
     logoLabel: {
@@ -168,17 +168,14 @@ const ProductForm: React.FC = () => {
             <Icon>fact_check</Icon>
             <a>Atributos:</a>
           </div>
-          <div className={classes.table}>
+          <ul style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {productDetail.category.attributes.map((attribute) => (
-              <div className={classes.attributeRow}>
-                <Icon>chevron_right</Icon>
-                <div>
-                  <a>{attribute.name}:</a>
-                  <a className={classes.value}> {attribute.value}</a>
-                </div>
-              </div>
+              <li>
+                <a>{attribute.name}:</a>
+                <a className={classes.value}> {attribute.value}</a>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
 
         <div className={classesGlobal.endButtonContainer}>
