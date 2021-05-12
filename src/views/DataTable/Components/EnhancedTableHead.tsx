@@ -8,6 +8,8 @@ import Checkbox from '@material-ui/core/Checkbox'
 import { Order } from '../../../types/Order'
 import { Data } from '../../../types/Data'
 import clsx from 'clsx'
+import Button from '@material-ui/core/Button'
+import { Input } from '@material-ui/core'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,9 +26,12 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     tableHead: {
       backgroundColor: theme.palette.type == 'dark' ? theme.palette.background.paper : theme.palette.background.default,
-      filter: theme.palette.type == 'dark' ? 'brightness(70%)' : 'brightness(95%)'
+      filter: theme.palette.type == 'dark' ? 'brightness(70%)' : 'brightness(95%)',
       // backgroundColor: theme.palette.primary.main,
       // color: 'white'
+      borderSpacing: '2px',
+      fontWeight: 600,
+      fontSize: '1rem'
     },
     tableHeadLeft: {
       borderTopLeftRadius: 6
@@ -41,26 +46,23 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-interface HeadCell {
-  disablePadding: boolean
-  id: keyof Data
+interface HeadProps {
   label: string
-  numeric: boolean
 }
 
-const headCells: HeadCell[] = [
-  { id: 'sku', numeric: true, disablePadding: true, label: 'SKU' },
-  { id: 'nombre', numeric: false, disablePadding: false, label: 'Nombre' },
-  { id: 'marca', numeric: false, disablePadding: false, label: 'Marca' },
-  { id: 'stock', numeric: true, disablePadding: false, label: 'Stock' },
-  { id: 'progreso', numeric: false, disablePadding: false, label: 'Progreso' },
-  { id: 'progreso', numeric: false, disablePadding: false, label: 'Estado' },
-  { id: 'tienda', numeric: false, disablePadding: false, label: 'Tiendas  ' }
+const headCellsProps: HeadProps[] = [
+  { label: 'SKU' },
+  { label: 'Nombre' },
+  { label: 'Marca' },
+  { label: 'Stock' },
+  { label: 'Progreso' },
+  { label: 'Estado' },
+  { label: 'Tiendas  ' },
+  { label: '' }
 ]
 
 interface EnhancedTableProps {
   numSelected: number
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void
   order: Order
   orderBy: string
@@ -69,10 +71,25 @@ interface EnhancedTableProps {
 
 const EnhancedTableHead: React.FC<EnhancedTableProps> = (props) => {
   const classes = useStyles()
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props
-  const createSortHandler = (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
+
+  const { onSelectAllClick, numSelected, rowCount } = props
+
+  /*   const createSortHandler = (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
     onRequestSort(event, property)
-  }
+  } */
+
+  //TODO REDONDEAR FINAL
+  const headCell = (placeholder: string) => (
+    <TableCell className={classes.tableHead}>
+      {/*       <div className="action-column">
+        <Input placeholder={placeholder} />
+        <Button>
+          <span className="material-icons">arrow_up</span>
+        </Button> 
+      </div> */}
+      {placeholder}
+    </TableCell>
+  )
 
   return (
     <TableHead>
@@ -85,27 +102,7 @@ const EnhancedTableHead: React.FC<EnhancedTableProps> = (props) => {
             inputProps={{ 'aria-label': 'select all desserts' }}
           />
         </TableCell>
-        {headCells.map((headCell, index) => (
-          <TableCell
-            className={clsx(
-              classes.tableHead,
-              headCells.length == index + 1 ? classes.tableHeadRight : classes.tableHead
-            )}
-            key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'default'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
-              className={classes.headLabel}
-            >
-              {headCell.label}
-            </TableSortLabel>
-          </TableCell>
-        ))}
+        {headCellsProps.map((headCellData, index) => headCell(headCellData.label))}
       </TableRow>
     </TableHead>
   )

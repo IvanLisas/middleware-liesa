@@ -6,9 +6,11 @@ import TableRow from '@material-ui/core/TableRow'
 import Checkbox from '@material-ui/core/Checkbox'
 import MyChip from './MyChip'
 import MyLinearProgress from './MyLinearProgress'
-import { Data } from '../../../types/Data'
+import { Product } from '../../../types/Product'
 import { Order } from '../../../types/Order'
 import Markets from './Markets'
+import IconButton from '@material-ui/core/IconButton'
+import Icon from '@material-ui/core/Icon'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme: Theme) =>
@@ -21,6 +23,9 @@ const useStyles = makeStyles((theme: Theme) =>
     tableCell: {
       fontSize: '1rem'
     },
+    tableCellProgressLinear: {
+      width: 150
+    },
     chip: {
       /*       paddingRight: 0,
       paddingLeft: 50 */
@@ -28,6 +33,12 @@ const useStyles = makeStyles((theme: Theme) =>
     market: {
       /*      paddingRight: 30, */
       /*    paddingLeft: 30 */
+    },
+    tableRow: {
+      '&$selected': {
+        backgroundColor: theme.palette.primary.main,
+        opacity: 0.16
+      }
     }
   })
 )
@@ -62,9 +73,9 @@ export function stableSort<T>(array: T[], comparator: (a: T, b: T) => number): T
 }
 
 interface MyTableBodyProps {
-  rows: Data[]
+  rows: Product[]
   order: Order
-  orderBy: keyof Data
+  orderBy: keyof Product
   page: number
   rowsPerPage: number
   isSelected: (value: number) => boolean
@@ -92,60 +103,56 @@ const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
 
   return (
     <TableBody>
-      {stableSort(rows, getComparator(order, orderBy))
-        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-        .map((row, index) => {
-          const isItemSelected = isSelected(row.sku)
-          const labelId = `enhanced-table-checkbox-${index}`
-          return (
-            <TableRow
-              hover
-              /*    onClick={(event) => handleClick(event, row.sku)} */
-              role="checkbox"
-              aria-checked={isItemSelected}
-              tabIndex={-1}
-              key={row.sku}
-              selected={isItemSelected}
-            >
-              <TableCell className={classes.tableCell} padding="checkbox">
-                <Checkbox
-                  onClick={(event) => handleClickCheckBox(event, row.sku)}
-                  checked={isItemSelected}
-                  inputProps={{ 'aria-labelledby': labelId }}
-                />
-              </TableCell>
-              <TableCell className={classes.tableCell} align="right" id={labelId}>
-                {row.sku}
-              </TableCell>
-              <TableCell className={classes.tableCell} size="medium" align="left">
-                {/*                 <Link style={{ cursor: 'pointer', color: 'none' }} onClick={(event) => handleClick(event, row.id)}>
-                  {row.nombre} 
-                </Link>*/}
-                <a style={{ cursor: 'pointer' }} onClick={(event) => handleClick(event, row.id)}>
-                  {row.nombre}
-                </a>
-              </TableCell>
-              {/*               <a style={{ cursor: 'pointer' }} onClick={(event) => handleClick(event, row.id)}>
-                  {row.nombre}
-                </a> */}
-              <TableCell className={classes.tableCell} align="left">
-                {row.marca}
-              </TableCell>
-              <TableCell className={classes.tableCell} align="right">
-                {row.stock}
-              </TableCell>
-              <TableCell align="right">
-                <MyLinearProgress value={row.progreso} />
-              </TableCell>
-              <TableCell align="left">
-                <MyChip progress={row.progreso} />
-              </TableCell>
-              <TableCell className={classes.market} align="left">
-                <Markets markets={row.tienda} />
-              </TableCell>
-            </TableRow>
-          )
-        })}
+      {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+        const isItemSelected = isSelected(row.sku)
+        const labelId = `enhanced-table-checkbox-${index}`
+        return (
+          <TableRow
+            hover
+            /*    onClick={(event) => handleClick(event, row.sku)} */
+            role="checkbox"
+            aria-checked={isItemSelected}
+            tabIndex={-1}
+            key={row.sku}
+            selected={isItemSelected}
+            className={classes.tableRow}
+          >
+            <TableCell className={classes.tableCell} padding="checkbox">
+              <Checkbox
+                onClick={(event) => handleClickCheckBox(event, row.sku)}
+                checked={isItemSelected}
+                inputProps={{ 'aria-labelledby': labelId }}
+              />
+            </TableCell>
+            <TableCell className={classes.tableCell} align="right" id={labelId}>
+              {row.sku}
+            </TableCell>
+            <TableCell className={classes.tableCell} size="medium" align="left">
+              {row.name}
+            </TableCell>
+            <TableCell className={classes.tableCell} align="left">
+              {row.brand.name}
+            </TableCell>
+            <TableCell className={classes.tableCell} align="right">
+              {row.stock}
+            </TableCell>
+            <TableCell className={classes.tableCellProgressLinear} align="right">
+              <MyLinearProgress value={row.filledDataProgress} />
+            </TableCell>
+            <TableCell align="left">
+              <MyChip progress={row.filledDataProgress} />
+            </TableCell>
+            <TableCell className={classes.market} align="left">
+              <Markets markets={row.activeMarketPlaces} />
+            </TableCell>
+            <TableCell className={classes.market} align="left">
+              <IconButton onClick={(event) => handleClick(event, row.id)}>
+                <Icon color="primary">edit_note</Icon>
+              </IconButton>
+            </TableCell>
+          </TableRow>
+        )
+      })}
       {emptyRows > 0 && (
         <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
           <TableCell colSpan={6} />

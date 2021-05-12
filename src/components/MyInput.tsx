@@ -10,11 +10,8 @@ export const useStyles = makeStyles((theme) => ({
     borderRadius: '16px',
     padding: '0px 16px',
     outline: '0px',
-    color: 'white'
+    color: 'white !important'
   }
-  /*   inputContainer: {
-    ...theme.palette.label,
-  }, */
 }))
 
 /* const MyInput = ({ placeholder, onChange, value, type, onKeyPress }) => {
@@ -26,7 +23,6 @@ const MyInput: React.FC<InputHTMLAttributes<HTMLInputElement>> = (props) => {
       <input
         onKeyPress={(event) => (props.onKeyPress ? event.key : () => null)}
         type={props.type ? props.type : 'text'}
-        placeholder={props.placeholder}
         className={classes.input}
         onChange={(event) => (props.onChange ? event.target.value : () => null)}
         value={props.value}

@@ -87,12 +87,17 @@ const CollapseButton: React.FC<CollapseButtonProps> = ({ item, drawerOpen, setDr
       </ListItem>
       <Collapse in={open && drawerOpen} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          {item.children.map((children) => (
-            <ListItem onClick={() => history.push(item.ruta + children.ruta)} button className={classes.nested}>
+          {item.children.map((children, index) => (
+            <ListItem
+              key={'children_' + index}
+              onClick={() => history.push(item.ruta + children.ruta)}
+              button
+              className={classes.nested}
+            >
               <ListItemIcon className={classes.ListItemIcon}>
                 <Icon className={classes.icon}>{children.icon}</Icon>
               </ListItemIcon>
-              <ListItemText disableTypography className={classes.label} primary={children.label} />
+              <ListItemText disableTypography primary={children.label} />
             </ListItem>
           ))}
         </List>

@@ -28,6 +28,11 @@ const ThemeContextProvider: React.FC = ({ children }) => {
 
   const theme = createMuiTheme({
     overrides: {
+      MuiDialog: {
+        paper: {
+          borderRadius: 12
+        }
+      },
       MuiPaper: {
         elevation4: {
           //Shadow box de la tool bar
@@ -40,6 +45,11 @@ const ThemeContextProvider: React.FC = ({ children }) => {
           //  color: primaryColor()
         }
       }
+      /*       MuiSelect: {
+        root: {
+          backgroundColor: 'red !important'
+        }
+      } */
     }
   })
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 import TableContainer from '@material-ui/core/TableContainer'
@@ -19,6 +19,7 @@ import { Product } from '../../types/Product'
 import { useHistory } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import productStub from '../../stubs/ProductStub'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme: Theme) =>
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     paper: {
       width: '100%',
-      minWidth: 1000,
+      minWidth: 1100,
       boxShadow: 'none',
       flexWrap: 'wrap',
       display: 'flex',
@@ -52,17 +53,19 @@ const DataTable: React.FC = () => {
   const classes = useStyles()
   const classesGlobal = useGlobalStyle()
   const [order, setOrder] = useState<Order>('asc')
-  const [orderBy, setOrderBy] = useState<keyof Data>('sku')
+  const [orderBy, setOrderBy] = useState<keyof Product>('sku')
   const [selected, setSelected] = useState<number[]>([])
   const [page, setPage] = useState(0)
   const [dense, setDense] = useState(true)
   const [rowsPerPage, setRowsPerPage] = useState(10)
-  const [rows, setRows] = useState<Data[]>([])
+  const [rows, setRows] = useState<Product[]>([])
   const history = useHistory()
   const [loading, setLoading] = useState(true)
   const { enqueueSnackbar } = useSnackbar()
+  const myRef = useRef(document.createElement('table'))
+  const tableRef = React.createRef()
 
-  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
+  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Product) => {
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
     setOrderBy(property)
@@ -103,7 +106,9 @@ const DataTable: React.FC = () => {
   }
 
   const handleChangePage = (event: unknown, newPage: number) => {
+    console.log(myRef)
     setPage(newPage)
+    myRef.current.scrollTop = 0
   }
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -121,28 +126,14 @@ const DataTable: React.FC = () => {
 
   useEffect(() => {
     const getProducts = async () => {
-      /*       const productsMock = productService.getProductsMock()
-      setRows([...productsMock]) */
-      let products: Product[] = []
       try {
-        products = await productService.getProducts()
+        // setRows([...(await productService.getProducts())])
+        setRows([...productStub.products])
         setLoading(false)
       } catch (error) {
         console.log(error)
         enqueueSnackbar('Error al conectar con el servidor: ' + error.message, { variant: 'error' })
       }
-      const productsTransformerd = products.map((product) =>
-        createData(
-          product.id,
-          product.sku,
-          product.name,
-          product.brand.name,
-          product.activeMarketPlaces,
-          product.filledDataProgress,
-          product.stock
-        )
-      )
-      setRows([...productsTransformerd])
     }
     getProducts()
   }, [])
@@ -152,8 +143,13 @@ const DataTable: React.FC = () => {
       <Paper className={classes.paper}>
         <div>
           <EnhancedTableToolbar numSelected={selected.length} />
-          <TableContainer className={clsx(classes.tableContainer, classesGlobal.scrollbarStyles)}>
+          <TableContainer ref={myRef} className={clsx(classes.tableContainer, classesGlobal.scrollbarStyles)}>
+            {/*             {window.scrollTo({
+              top: 0,
+              behavior: 'smooth'
+            })} */}
             <Table
+              ref={myRef}
               stickyHeader
               aria-label="sticky table"
               aria-labelledby="tableTitle"
@@ -164,7 +160,6 @@ const DataTable: React.FC = () => {
                 order={order}
                 orderBy={orderBy}
                 onSelectAllClick={handleSelectAllClick}
-                onRequestSort={handleRequestSort}
                 rowCount={rows.length}
               />
               {/*               {loading && (

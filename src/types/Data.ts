@@ -6,6 +6,7 @@ export type Data = {
   tienda: string[]
   progreso: number
   stock: number
+  estado: number
 }
 
 export default function createData(
@@ -15,7 +16,8 @@ export default function createData(
   marca: string,
   tienda: string[],
   progreso: number,
+  estado: number,
   stock: number
 ): Data {
-  return { id, sku, nombre, marca, tienda, progreso, stock }
+  return { id, sku, nombre, marca, tienda, progreso, estado, stock }
 }

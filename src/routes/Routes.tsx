@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import DataTable from '../views/DataTable/DataTable'
+import DataTableImproved from '../views/DataTableImproved/DataTableImproved'
 import Login from '../views/Login/Login'
 import { UserContext } from '../contexts/UserContext'
 import Menu from '../components/Menu/Menu'

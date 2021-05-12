@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
     }),
     width: theme.spacing(7) + 1,
     [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(7) + 1
+      width: theme.spacing(7) + 8 //Probar en docker
     }
   },
   toolbar: {
@@ -97,29 +97,32 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    margin: '0 15px 0 15px',
-    color: theme.palette.text.primary
+    gap: 16
+    /*     margin: '0 15px 0 15px', */
+    /*     color: theme.palette.text.primary */
   },
   logo: {
     width: '28px',
-    height: '28px',
-    marginRight: '0.5rem'
+    height: '28px'
+    /*     marginRight: '0.5rem' */
   },
   logoLabel: {
     width: '150px',
-    height: '18px',
-    marginRight: '0.5rem'
+    height: '18px'
+    /*     marginRight: '0.5rem' */
   },
   toolbarLeft: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    paddingLeft: 16
   },
   toolbarRight: {
     display: 'flex',
     width: '14%',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    paddingRight: 16
   },
 
   userContainer: {
@@ -298,12 +301,14 @@ const Menu: React.FC = ({ children }) => {
       <AppBar className={classes.appBar}>
         <Toolbar className={classes.toolbar}>
           <div className={classes.toolbarLeft}>
-            <IconButton onClick={handleDrawer} edge="start" className={clsx(classes.icon)}>
+            {/*             <IconButton onClick={handleDrawer} edge="start" className={clsx(classes.icon)}>
               <Icon className={classes.icon}>menu_open</Icon>
-            </IconButton>
-            <Button size="large" className={classes.logoContainer} onClick={() => history.push('/home')}>
-              <img className={classes.logo} src={isDark ? logoNight : logoLight} />
-              <img className={classes.logoLabel} src={isDark ? labelNight : labelLight} />
+            </IconButton> */}
+            <Button size="large" onClick={() => history.push('/home')}>
+              <div className={classes.logoContainer}>
+                <img className={classes.logo} src={isDark ? logoNight : logoLight} />
+                <img className={classes.logoLabel} src={isDark ? labelNight : labelLight} />
+              </div>
             </Button>
           </div>
           <div className={classes.toolbarRight}>
@@ -335,8 +340,8 @@ const Menu: React.FC = ({ children }) => {
         }}
       >
         <List className={classes.itemList}>
-          {itemList.map((item) => (
-            <div>
+          {itemList.map((item, index) => (
+            <div key={'item_' + index}>
               <CollapseButton item={item} drawerOpen={open} setDrawerOpen={setOpen} />
               <Divider variant="middle" />
             </div>

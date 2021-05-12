@@ -30,14 +30,13 @@ const MyChip: React.FC<MyChipProps> = ({ progress }) => {
 
   useEffect(() => {
     let chip = warningChip
-    console.log(progress)
     if (progress === 100) chip = doneChip
     if (progress === 0) chip = cancelChip
     setChipType(chip)
   }, [])
 
   return (
-    <div style={{ minWidth: 130 }}>
+    <div style={{ minWidth: '100%' }}>
       <Chip
         variant="outlined"
         style={{ padding: 3, color: chipType.color, borderColor: chipType.color }}
