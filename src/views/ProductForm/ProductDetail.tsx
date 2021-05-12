@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     row: {
       display: 'flex',
-      gap: 8,
+      gap: 12,
       alignItems: 'center'
     },
 
@@ -99,10 +99,10 @@ const useStyles = makeStyles((theme: Theme) =>
       gap: 4
     },
     dataContainer: {
-      padding: '16px 0px 0px 40px'
+      padding: '16px 0px 0px 38px'
     },
     dataCategoryContainer: {
-      padding: '8px 0px 0px 40px'
+      padding: '8px 0px 0px 38px'
     },
     categoryContainer: {
       display: 'flex',
@@ -114,7 +114,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'grid',
       gridTemplateColumns: '1fr 1fr',
       gap: 24,
-      padding: '16px 0px 0px 32px'
+      padding: '16px 0px 0px 30px'
     }
   })
 )
