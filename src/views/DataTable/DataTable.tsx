@@ -9,7 +9,6 @@ import Switch from '@material-ui/core/Switch'
 import MyBox from '../../components/MyBox'
 import MyTableBody from './Components/MyTableBody'
 import useGlobalStyle from '../../styles/globalStyles'
-import createData, { Data } from '../../types/Data'
 import { productService } from '../../services/ProductService'
 import EnhancedTableToolbar from './Components/EnhancedTableToolbar'
 import clsx from 'clsx'
@@ -19,7 +18,6 @@ import { Product } from '../../types/Product'
 import { useHistory } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import productStub from '../../stubs/ProductStub'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme: Theme) =>
@@ -60,10 +58,11 @@ const DataTable: React.FC = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [rows, setRows] = useState<Product[]>([])
   const history = useHistory()
-  const [loading, setLoading] = useState(true)
   const { enqueueSnackbar } = useSnackbar()
   const myRef = useRef(document.createElement('table'))
-  const tableRef = React.createRef()
+  const [loading, setLoading] = useState(true)
+
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage)
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Product) => {
     const isAsc = orderBy === property && order === 'asc'
@@ -80,7 +79,7 @@ const DataTable: React.FC = () => {
     setSelected([])
   }
 
-  const handleClick = async (event: React.MouseEvent<unknown>, id: number) => {
+  const handleGoToProductClick = async (event: React.MouseEvent<unknown>, id: number) => {
     try {
       await productService.getProduct(id)
       history.push('/productDetail/' + id)
@@ -92,7 +91,6 @@ const DataTable: React.FC = () => {
   const handleClickCheckBox = (event: React.MouseEvent<unknown>, sku: number) => {
     const selectedIndex = selected.indexOf(sku)
     let newSelected: number[] = []
-
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, sku)
     } else if (selectedIndex === 0) {
@@ -122,8 +120,6 @@ const DataTable: React.FC = () => {
 
   const isSelected = (sku: number) => selected.indexOf(sku) !== -1
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage)
-
   useEffect(() => {
     const getProducts = async () => {
       try {
@@ -144,10 +140,6 @@ const DataTable: React.FC = () => {
         <div>
           <EnhancedTableToolbar numSelected={selected.length} />
           <TableContainer ref={myRef} className={clsx(classes.tableContainer, classesGlobal.scrollbarStyles)}>
-            {/*             {window.scrollTo({
-              top: 0,
-              behavior: 'smooth'
-            })} */}
             <Table
               ref={myRef}
               stickyHeader
@@ -163,7 +155,7 @@ const DataTable: React.FC = () => {
                 rowCount={rows.length}
               />
               {/*               {loading && (
-                <div>
+                <div style={{ display: 'flex', width: '100%' }}>
                   <CircularProgress />
                 </div>
               )} */}
@@ -174,7 +166,7 @@ const DataTable: React.FC = () => {
                 page={page}
                 rowsPerPage={rowsPerPage}
                 isSelected={isSelected}
-                handleClick={handleClick}
+                handleClick={handleGoToProductClick}
                 handleClickCheckBox={handleClickCheckBox}
                 emptyRows={emptyRows}
                 dense={dense}

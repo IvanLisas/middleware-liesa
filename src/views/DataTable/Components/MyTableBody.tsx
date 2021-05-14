@@ -88,21 +88,14 @@ interface MyTableBodyProps {
 const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
   const classes = useStyles()
 
-  const {
-    rows,
-    order,
-    orderBy,
-    page,
-    rowsPerPage,
-    isSelected,
-    handleClick,
-    handleClickCheckBox,
-    emptyRows,
-    dense
-  } = props
+  const { rows, order, orderBy, page, rowsPerPage, isSelected, handleClick, handleClickCheckBox, emptyRows, dense } =
+    props
 
   return (
     <TableBody>
+      {/*                       <div style={{ display: 'flex', width: '100%' }}>
+                  <CircularProgress />
+                </div> */}
       {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
         const isItemSelected = isSelected(row.sku)
         const labelId = `enhanced-table-checkbox-${index}`

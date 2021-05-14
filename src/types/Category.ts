@@ -1,4 +1,4 @@
-import { Attribute } from './Attribute'
+import { Attribute } from './Attributes'
 
 export type Category = {
   id: number

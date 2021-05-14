@@ -1,4 +1,4 @@
-import createAttribute from '../types/Attribute'
+import createAttribute from '../types/Attributes'
 
 class AttributeStub {
   attribute1 = createAttribute(1, 'Atributo 1', 'Valor de atributo 1')
