@@ -74,6 +74,7 @@ const ChangeCategoryDialog: React.FC<ChangeCategoryDialogProps> = (props) => {
           >
             {brandStub.brands.map((brand, index) => (
               <Button
+                key={brand.name + index}
                 color="default"
                 style={{ display: 'flex', justifyContent: 'space-between', width: '100%', fontWeight: 500 }}
               >
