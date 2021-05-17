@@ -198,11 +198,11 @@ const ProductForm: React.FC = () => {
               <div className={classes.row}>
                 {/*   <Icon>map</Icon> */}
                 <div className={classes.categoryPathContainer}>
-                  <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
+                  {/*                   <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
                     {productDetail.category.categoryPath.map((path) => (
                       <a>{path.name}</a>
                     ))}
-                  </Breadcrumbs>
+                  </Breadcrumbs> */}
                 </div>
               </div>
               <div className={classes.categoryInput}>
@@ -221,24 +221,17 @@ const ProductForm: React.FC = () => {
             <Icon color="primary">inventory_2</Icon>
             <a className={classes.tittle}>Atributos</a>
           </div>
-          <div className={classes.attributeGrid}>
+          {/*           <div className={classes.attributeGrid}>
             {productDetail.category.attributes.map((attribute) => (
               <div className={classes.row}>
                 <Icon>chevron_right</Icon>
                 <TextField
                   label={attribute.name}
                   value={attribute.value}
-                  /*  InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Icon>inventory_2</Icon>
-                    </InputAdornment>
-                  )
-                }} */
                 />
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
         <div className={classesGlobal.endButtonContainer}>
           <Button onClick={goHome} type="submit" variant="contained" color="primary">
