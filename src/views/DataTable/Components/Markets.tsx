@@ -33,7 +33,7 @@ const Markets: React.FC<MarketsProps> = ({ markets }) => {
     <div className={classes.marketsContainer}>
       <img
         className={classes.itemLogo}
-        src={marketsNames.includes('GoogleShops') ? '/googleshopping-logo.png' : '/googleshopping-logo-bn.png'}
+        src={marketsNames.includes('Googleshops') ? '/googleshopping-logo.png' : '/googleshopping-logo-bn.png'}
       />
       <img
         className={classes.itemLogo}

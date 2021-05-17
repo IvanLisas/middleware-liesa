@@ -80,7 +80,7 @@ const EnhancedTableHead: React.FC<EnhancedTableProps> = (props) => {
 
   //TODO REDONDEAR FINAL
   const headCell = (placeholder: string) => (
-    <TableCell className={classes.tableHead}>
+    <TableCell key={placeholder} className={classes.tableHead}>
       {/*       <div className="action-column">
         <Input placeholder={placeholder} />
         <Button>
