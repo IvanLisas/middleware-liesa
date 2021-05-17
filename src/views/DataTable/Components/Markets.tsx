@@ -3,6 +3,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import { Icon } from '@material-ui/core'
 import Chip from '@material-ui/core/Chip'
 import { useEffect } from 'react'
+import { MarketPlace } from '../../../types/MarketPlace'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -19,30 +20,33 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 interface MarketsProps {
-  markets: string[]
+  markets: MarketPlace[]
 }
 
 const Markets: React.FC<MarketsProps> = ({ markets }) => {
   const classes = useStyles()
+
+  const marketsNames = markets.map((market) => market.name)
+
   if (!markets) return null
   return (
     <div className={classes.marketsContainer}>
       <img
         className={classes.itemLogo}
-        src={markets.includes('GoogleShops') ? '/googleshopping-logo.png' : '/googleshopping-logo-bn.png'}
+        src={marketsNames.includes('GoogleShops') ? '/googleshopping-logo.png' : '/googleshopping-logo-bn.png'}
       />
       <img
         className={classes.itemLogo}
-        src={markets.includes('Mercadolibre') ? '/mercadolibre-logo.png' : '/mercadolibre-logo-bn.png'}
+        src={marketsNames.includes('Mercadolibre') ? '/mercadolibre-logo.png' : '/mercadolibre-logo-bn.png'}
       />
       <img
         className={classes.itemLogo}
-        src={markets.includes('Tiendanube') ? '/tiendanube-logo.png' : '/tiendanube-logo-bn.png'}
+        src={marketsNames.includes('Tiendanube') ? '/tiendanube-logo.png' : '/tiendanube-logo-bn.png'}
       />
 
       <img
         className={classes.itemLogo}
-        src={markets.includes('Magento') ? '/magento-logo.png' : '/magento-logo-bn.png'}
+        src={marketsNames.includes('Magento') ? '/magento-logo.png' : '/magento-logo-bn.png'}
       />
     </div>
   )
@@ -50,9 +54,10 @@ const Markets: React.FC<MarketsProps> = ({ markets }) => {
 
 export default Markets
 
-const marketMap = new Map([
+/* const marketMap = new Map([
   ['Mercadolibre', '/mercadolibre-logo.png'],
   ['Magento', '/magento-logo.png'],
   ['GoogleShops', '/googleshopping-logo.png'],
   ['Tiendanube', '/tiendanube-logo.png']
 ])
+ */

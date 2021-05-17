@@ -19,7 +19,7 @@ class ProductStub {
   lastId = 0
 
   products = [
-    createProduct(
+    /*  createProduct(
       this.calculeId(),
       this.lastId,
       'Termica',
@@ -188,7 +188,7 @@ class ProductStub {
       this.randomMarkets(),
       categortStub.categotyPath,
       Math.trunc(Math.random() * this.stockLimit)
-    )
+    ) */
   ]
 
   calculeId() {

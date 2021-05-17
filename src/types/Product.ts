@@ -1,5 +1,6 @@
 import { Brand } from './Brand'
 import { Category } from './Category'
+import { MarketPlace } from './MarketPlace'
 
 export type Product = {
   id: number
@@ -7,7 +8,7 @@ export type Product = {
   name: string
   brand: Brand
   filledDataProgress: number
-  activeMarketPlaces: string[]
+  activeMarketPlaces: MarketPlace[]
   CategoryPath: Category[]
   stock: number
 }
@@ -18,7 +19,7 @@ export default function createProduct(
   name: string,
   brand: Brand,
   filledDataProgress: number,
-  activeMarketPlaces: string[],
+  activeMarketPlaces: MarketPlace[],
   CategoryPath: Category[],
   stock: number
 ): Product {

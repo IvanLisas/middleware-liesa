@@ -5,10 +5,9 @@ export type ProductDetail = {
   id: number
   sku: number
   name: string
-  brand: Brand
-  description: string
+  filledDataProgress: number
   activeMarketPlaces: string[]
-  category: Category
   stock: number
-  /*   categoryPath:  */
+  brand: Brand
+  category: Category
 }
