@@ -61,7 +61,7 @@ const headCellsProps: HeadProps[] = [
   { label: '' }
 ]
 
-interface EnhancedTableProps {
+interface MyTableHeadProps {
   numSelected: number
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void
   order: Order
@@ -69,7 +69,7 @@ interface EnhancedTableProps {
   rowCount: number
 }
 
-const EnhancedTableHead: React.FC<EnhancedTableProps> = (props) => {
+const MyTableHead: React.FC<MyTableHeadProps> = (props) => {
   const classes = useStyles()
 
   const { onSelectAllClick, numSelected, rowCount } = props
@@ -108,4 +108,4 @@ const EnhancedTableHead: React.FC<EnhancedTableProps> = (props) => {
   )
 }
 
-export default EnhancedTableHead
+export default MyTableHead

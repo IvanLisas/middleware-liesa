@@ -30,11 +30,11 @@ const useToolbarStyles = makeStyles((theme: Theme) =>
   })
 )
 
-interface EnhancedTableToolbarProps {
+interface MyTableToolbarProps {
   numSelected: number
 }
 
-const EnhancedTableToolbar: React.FC<EnhancedTableToolbarProps> = (props) => {
+const MyTableToolbar: React.FC<MyTableToolbarProps> = (props) => {
   const classes = useToolbarStyles()
 
   const { numSelected } = props
@@ -71,4 +71,4 @@ const EnhancedTableToolbar: React.FC<EnhancedTableToolbarProps> = (props) => {
   )
 }
 
-export default EnhancedTableToolbar
+export default MyTableToolbar

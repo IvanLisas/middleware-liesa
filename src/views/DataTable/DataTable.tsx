@@ -10,10 +10,10 @@ import MyBox from '../../components/MyBox'
 import MyTableBody from './Components/MyTableBody'
 import useGlobalStyle from '../../styles/globalStyles'
 import { productService } from '../../services/ProductService'
-import EnhancedTableToolbar from './Components/EnhancedTableToolbar'
+import MyTableToolbar from './Components/MyTableToolbar'
 import clsx from 'clsx'
 import { Order } from '../../types/Order'
-import EnhancedTableHead from './Components/EnhancedTableHead'
+import MyTableHead from './Components/MyTableHead'
 import { Product } from '../../types/Product'
 import { useHistory } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
@@ -138,7 +138,7 @@ const DataTable: React.FC = () => {
     <MyBox>
       <Paper className={classes.paper}>
         <div>
-          <EnhancedTableToolbar numSelected={selected.length} />
+          <MyTableToolbar numSelected={selected.length} />
           <TableContainer ref={myRef} className={clsx(classes.tableContainer, classesGlobal.scrollbarStyles)}>
             <Table
               ref={myRef}
@@ -147,7 +147,7 @@ const DataTable: React.FC = () => {
               aria-labelledby="tableTitle"
               size={dense ? 'small' : 'medium'}
             >
-              <EnhancedTableHead
+              <MyTableHead
                 numSelected={selected.length}
                 order={order}
                 orderBy={orderBy}
