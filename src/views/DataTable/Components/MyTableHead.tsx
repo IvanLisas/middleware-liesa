@@ -42,6 +42,9 @@ const useStyles = makeStyles((theme: Theme) =>
     headLabel: {
       fontSize: '1rem',
       fontWeight: 700
+    },
+    checkbox: {
+      color: theme.palette.primary.main + '!important'
     }
   })
 )
@@ -100,6 +103,9 @@ const MyTableHead: React.FC<MyTableHeadProps> = (props) => {
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
             inputProps={{ 'aria-label': 'select all desserts' }}
+            classes={{
+              checked: classes.checkbox
+            }}
           />
         </TableCell>
         {headCellsProps.map((headCellData, index) => headCell(headCellData.label))}

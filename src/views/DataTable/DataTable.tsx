@@ -6,7 +6,7 @@ import TablePagination from '@material-ui/core/TablePagination'
 import Paper from '@material-ui/core/Paper'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
-import MyBox from '../../components/MyBox'
+import MyBox from '../../components/MyStyledComponents/MyBox'
 import MyTableBody from './Components/MyTableBody'
 import useGlobalStyle from '../../styles/globalStyles'
 import { productService } from '../../services/ProductService'
@@ -17,7 +17,12 @@ import MyTableHead from './Components/MyTableHead'
 import { Product } from '../../types/Product'
 import { useHistory } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
+import { trackPromise } from 'react-promise-tracker'
+import LoadingCircularProgress from '../../components/LoadingComponents/LoadingCircularProgress'
+import Skeleton from '@material-ui/lab/Skeleton'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import LinearProgress from '@material-ui/core/LinearProgress'
+import LoadingLinearProgress from '../../components/LoadingComponents/LoadingLinearProgress'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme: Theme) =>
@@ -36,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'space-between'
     },
     tableContainer: {
-      maxHeight: 'calc(100vh - 260px)' //TODO: Estos 260px tendrian que depender de componentes
+      height: 'calc(100vh - 245px)' //TODO: Estos 237px tendrian que depender de componentes
     },
     bottomContainer: {
       display: 'flex',
@@ -48,6 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const DataTable: React.FC = () => {
+  const rowsPerPageOptions = [10, 25, 50, 100]
   const classes = useStyles()
   const classesGlobal = useGlobalStyle()
   const [order, setOrder] = useState<Order>('asc')
@@ -55,7 +61,7 @@ const DataTable: React.FC = () => {
   const [selected, setSelected] = useState<number[]>([])
   const [page, setPage] = useState(0)
   const [dense, setDense] = useState(true)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0])
   const [rows, setRows] = useState<Product[]>([])
   const history = useHistory()
   const { enqueueSnackbar } = useSnackbar()
@@ -123,13 +129,14 @@ const DataTable: React.FC = () => {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        setRows([...(await productService.getProducts())])
+        setRows([...(await trackPromise(productService.getProducts()))])
         //setRows([...productStub.products])
         setLoading(false)
       } catch (error) {
         console.log(error)
         enqueueSnackbar('Error al conectar con el servidor: ' + error.message, { variant: 'error' })
       }
+      setLoading(false)
     }
     getProducts()
   }, [])
@@ -137,50 +144,46 @@ const DataTable: React.FC = () => {
   return (
     <MyBox>
       <Paper className={classes.paper}>
-        <div>
-          <MyTableToolbar numSelected={selected.length} />
-          <TableContainer ref={myRef} className={clsx(classes.tableContainer, classesGlobal.scrollbarStyles)}>
-            <Table
-              ref={myRef}
-              stickyHeader
-              aria-label="sticky table"
-              aria-labelledby="tableTitle"
-              size={dense ? 'small' : 'medium'}
-            >
-              <MyTableHead
-                numSelected={selected.length}
-                order={order}
-                orderBy={orderBy}
-                onSelectAllClick={handleSelectAllClick}
-                rowCount={rows.length}
-              />
-              {/*               {loading && (
-                <div style={{ display: 'flex', width: '100%' }}>
-                  <CircularProgress />
-                </div>
-              )} */}
-              <MyTableBody
-                rows={rows}
-                order={order}
-                orderBy={orderBy}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                isSelected={isSelected}
-                handleClick={handleGoToProductClick}
-                handleClickCheckBox={handleClickCheckBox}
-                emptyRows={emptyRows}
-                dense={dense}
-              />
-            </Table>
-          </TableContainer>
-        </div>
+        <MyTableToolbar numSelected={selected.length} />
+        <LoadingLinearProgress />
+        <TableContainer ref={myRef} className={clsx(classes.tableContainer, classesGlobal.scrollbarStyles)}>
+          <Table
+            ref={myRef}
+            stickyHeader
+            aria-label="sticky table"
+            aria-labelledby="tableTitle"
+            size={dense ? 'small' : 'medium'}
+          >
+            <MyTableHead
+              numSelected={selected.length}
+              order={order}
+              orderBy={orderBy}
+              onSelectAllClick={handleSelectAllClick}
+              rowCount={rows.length}
+            />
+
+            <MyTableBody
+              rows={rows}
+              order={order}
+              orderBy={orderBy}
+              page={page}
+              rowsPerPage={rowsPerPage}
+              isSelected={isSelected}
+              handleClick={handleGoToProductClick}
+              handleClickCheckBox={handleClickCheckBox}
+              emptyRows={emptyRows}
+              dense={dense}
+              loading={loading}
+            />
+          </Table>
+        </TableContainer>
         <div className={classes.bottomContainer}>
           <FormControlLabel
             control={<Switch color="primary" checked={dense} onChange={handleChangeDense} />}
             label="Margen denso"
           />
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={rowsPerPageOptions}
             component="div"
             count={rows.length}
             rowsPerPage={rowsPerPage}

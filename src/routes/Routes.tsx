@@ -13,13 +13,16 @@ const Routes: React.FC = () => {
 
   return (
     <Router>
-      {user && <Menu />}
-      <Switch>
-        {user && <Route path="/mercadolibre/ruta1" component={CategoriesSelector} />}
-        {user && <Route path="/productDetail" component={ProductForm} />}
-        {user && <Route path="/" component={DataTable} />}
-        {!user && <Route path="/" component={Login} />}
-      </Switch>
+      {user && (
+        <Menu>
+          <Switch>
+            <Route path="/mercadolibre/ruta1" component={CategoriesSelector} />
+            <Route path="/productDetail" component={ProductForm} />
+            <Route path="/" component={DataTable} />
+          </Switch>
+        </Menu>
+      )}
+      {!user && <Route path="/" component={Login} />}
     </Router>
   )
 }

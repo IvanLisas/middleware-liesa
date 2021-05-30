@@ -1,7 +1,7 @@
 import React from 'react'
 import { DataGrid } from '@material-ui/data-grid'
 import productStub from '../../stubs/ProductStub'
-import MyBox from '../../components/MyBox'
+import MyBox from '../../components/MyStyledComponents/MyBox'
 
 const columns = [
   { field: 'sku', headerName: 'SKU' },

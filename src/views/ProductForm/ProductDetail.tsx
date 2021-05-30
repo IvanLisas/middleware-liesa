@@ -14,7 +14,7 @@ import Grid from '@material-ui/core/Grid'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
-import MyBox from '../../components/MyBox'
+import MyBox from '../../components/MyStyledComponents/MyBox'
 import useGlobalStyle from '../../styles/globalStyles'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
@@ -34,7 +34,7 @@ import { AccountCircle } from '@material-ui/icons'
 import Input from '@material-ui/core/Input'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
-import ChangeCategoryDialog from './Components/ChangeCategoryDialog'
+import ChangeCategoryDialog from './Components/ChangeCategoryDialog/ChangeCategoryDialog'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme: Theme) =>
@@ -52,7 +52,8 @@ const useStyles = makeStyles((theme: Theme) =>
     row: {
       display: 'flex',
       gap: 12,
-      alignItems: 'center'
+      alignItems: 'center',
+      fontSize: '1rem'
     },
 
     value: {
@@ -158,10 +159,12 @@ const ProductForm: React.FC = () => {
             <Icon color="primary">content_paste</Icon>
             <a className={classes.tittle}>Detalle del producto</a>
           </div>
+          <Divider color="primary" />
           <div className={classes.dataContainer}>
             <div className={classes.detailContainer}>
               <TextField
                 label="Nombre"
+                disabled
                 value={productDetail.name}
                 /*              InputProps={{
                 startAdornment: (
@@ -186,27 +189,17 @@ const ProductForm: React.FC = () => {
             </div>
           </div>
         </div>
-        {/*   <Divider color="primary" /> */}
+
         <div>
           <div className={classes.row}>
             <Icon color="primary">category</Icon>
             <a className={classes.tittle}>Categoria</a>
           </div>
-
+          <Divider />
           <div className={classes.dataCategoryContainer}>
             <div className={classes.categoryContainer}>
-              <div className={classes.row}>
-                {/*   <Icon>map</Icon> */}
-                <div className={classes.categoryPathContainer}>
-                  {/*                   <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
-                    {productDetail.category.categoryPath.map((path) => (
-                      <a>{path.name}</a>
-                    ))}
-                  </Breadcrumbs> */}
-                </div>
-              </div>
               <div className={classes.categoryInput}>
-                <div className={classes.row}>{/*            {productDetail.category.name} */}</div>
+                <div className={classes.row}>Categoria del producto</div>
                 <IconButton color="primary" style={{ padding: 4 }} onClick={() => setOpen(true)}>
                   <Icon>edit</Icon>
                 </IconButton>
@@ -221,6 +214,7 @@ const ProductForm: React.FC = () => {
             <Icon color="primary">inventory_2</Icon>
             <a className={classes.tittle}>Atributos</a>
           </div>
+          <Divider />
           {/*           <div className={classes.attributeGrid}>
             {productDetail.category.attributes.map((attribute) => (
               <div className={classes.row}>
@@ -232,7 +226,60 @@ const ProductForm: React.FC = () => {
               </div>
             ))}
           </div> */}
+
+          <div className={classes.attributeGrid}>
+            <div className={classes.row}>
+              <Icon>chevron_right</Icon>
+              <TextField label="Atributo" value="Valor" />
+            </div>
+            <div className={classes.row}>
+              <Icon>chevron_right</Icon>
+              <TextField label="Atributo" value="Valor" />
+            </div>
+            <div className={classes.row}>
+              <Icon>chevron_right</Icon>
+              <TextField label="Atributo" value="Valor" />
+            </div>
+          </div>
         </div>
+        <div>
+          <div className={classes.row}>
+            <Icon color="primary">straighten</Icon>
+            <a className={classes.tittle}>Peso y medidas</a>
+          </div>
+          <Divider />
+          {/*           <div className={classes.attributeGrid}>
+            {productDetail.category.attributes.map((attribute) => (
+              <div className={classes.row}>
+                <Icon>chevron_right</Icon>
+                <TextField
+                  label={attribute.name}
+                  value={attribute.value}
+                />
+              </div>
+            ))}
+          </div> */}
+
+          <div className={classes.attributeGrid}>
+            <div className={classes.row}>
+              <Icon>chevron_right</Icon>
+              <TextField label="Peso" value="Valor" />
+            </div>
+            <div className={classes.row}>
+              <Icon>chevron_right</Icon>
+              <TextField label="Atributo" value="Valor" />
+            </div>
+            <div className={classes.row}>
+              <Icon>chevron_right</Icon>
+              <TextField label="Atributo" value="Valor" />
+            </div>
+            <div className={classes.row}>
+              <Icon>chevron_right</Icon>
+              <TextField label="Atributo" value="Valor" />
+            </div>
+          </div>
+        </div>
+
         <div className={classesGlobal.endButtonContainer}>
           <Button onClick={goHome} type="submit" variant="contained" color="primary">
             Guardar

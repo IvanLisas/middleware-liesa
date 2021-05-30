@@ -11,6 +11,9 @@ import { Order } from '../../../types/Order'
 import Markets from './Markets'
 import IconButton from '@material-ui/core/IconButton'
 import Icon from '@material-ui/core/Icon'
+import { fade } from '@material-ui/core/styles/colorManipulator'
+import LoadingCircularProgress from '../../../components/LoadingComponents/LoadingCircularProgress'
+import Skeleton from '@material-ui/lab/Skeleton'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme: Theme) =>
@@ -26,19 +29,18 @@ const useStyles = makeStyles((theme: Theme) =>
     tableCellProgressLinear: {
       width: 150
     },
-    chip: {
-      /*       paddingRight: 0,
-      paddingLeft: 50 */
-    },
-    market: {
-      /*      paddingRight: 30, */
-      /*    paddingLeft: 30 */
-    },
+
     tableRow: {
       '&$selected': {
         backgroundColor: theme.palette.primary.main,
         opacity: 0.16
       }
+    },
+    rowSelected: {
+      backgroundColor: fade(theme.palette.primary.main, 0.08) + '!important'
+    },
+    checkbox: {
+      color: theme.palette.primary.main + '!important'
     }
   })
 )
@@ -83,19 +85,36 @@ interface MyTableBodyProps {
   handleClickCheckBox: (event: React.MouseEvent<unknown>, sku: number) => void
   emptyRows: number
   dense: boolean
+  loading: boolean
 }
 
 const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
   const classes = useStyles()
 
-  const { rows, order, orderBy, page, rowsPerPage, isSelected, handleClick, handleClickCheckBox, emptyRows, dense } =
-    props
+  const {
+    rows,
+    order,
+    orderBy,
+    page,
+    rowsPerPage,
+    isSelected,
+    handleClick,
+    handleClickCheckBox,
+    emptyRows,
+    dense,
+    loading
+  } = props
+
+  const isTheLastPage = page > rows.length / rowsPerPage
+
+  const calculeteTailOfPage = () => {
+    if (isTheLastPage) return rows.length - page * rowsPerPage
+    else return page * rowsPerPage + rowsPerPage
+  }
 
   return (
     <TableBody>
-      {/*                       <div style={{ display: 'flex', width: '100%' }}>
-                  <CircularProgress />
-                </div> */}
+      {/*   <LoadingCircularProgress></LoadingCircularProgress> */}
       {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
         const isItemSelected = isSelected(row.sku)
         const labelId = `enhanced-table-checkbox-${index}`
@@ -109,12 +128,18 @@ const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
             key={row.sku}
             selected={isItemSelected}
             className={classes.tableRow}
+            classes={{
+              selected: classes.rowSelected
+            }}
           >
             <TableCell className={classes.tableCell} padding="checkbox">
               <Checkbox
                 onClick={(event) => handleClickCheckBox(event, row.sku)}
                 checked={isItemSelected}
                 inputProps={{ 'aria-labelledby': labelId }}
+                classes={{
+                  checked: classes.checkbox
+                }}
               />
             </TableCell>
             <TableCell className={classes.tableCell} align="right" id={labelId}>
@@ -135,10 +160,10 @@ const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
             <TableCell align="left">
               <MyChip progress={row.filledDataProgress} />
             </TableCell>
-            <TableCell className={classes.market} align="left">
+            <TableCell align="left">
               <Markets markets={row.activeMarketPlaces} />
             </TableCell>
-            <TableCell className={classes.market} align="left">
+            <TableCell align="left">
               <IconButton onClick={(event) => handleClick(event, row.id)}>
                 <Icon color="primary">edit_note</Icon>
               </IconButton>
@@ -146,11 +171,12 @@ const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
           </TableRow>
         )
       })}
-      {emptyRows > 0 && (
+
+      {/*      {emptyRows > 0 && (
         <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
           <TableCell colSpan={6} />
         </TableRow>
-      )}
+      )} */}
     </TableBody>
   )
 }

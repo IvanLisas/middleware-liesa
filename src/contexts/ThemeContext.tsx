@@ -13,7 +13,7 @@ export const ThemeContextDispatch = createContext<ThemeContextDispatchProps>({
 })
 
 const ThemeContextProvider: React.FC = ({ children }) => {
-  const [isDark, setIsDark] = useState(false) //Initial palette style
+  const [isDark, setIsDark] = useState(true) //Initial palette style
 
   const paletteStyle = () => (isDark ? themeDark : themeLight)
 
@@ -21,48 +21,22 @@ const ThemeContextProvider: React.FC = ({ children }) => {
 
   const secondaryColor = () => '#b565a2' //Rosa
 
-  /*   const primaryColor = () => '#b565a2' //Rosa  */
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const secondaryColor2 = () => '#e23f3f' //Naranja
-
   const theme = createMuiTheme({
-    overrides: {
-      MuiDialog: {
-        paper: {
-          borderRadius: 12
-        }
+    palette: {
+      primary: {
+        main: primaryColor()
       },
-      MuiPaper: {
-        elevation4: {
-          //Shadow box de la tool bar
-          //boxShadow: 'none'
-        }
-      },
-      MuiSvgIcon: {
-        root: {
-          //Checkbox color
-          //  color: primaryColor()
-        }
+      secondary: {
+        main: secondaryColor()
       }
-      /*       MuiSelect: {
-        root: {
-          backgroundColor: 'red !important'
-        }
-      } */
     }
   })
 
   const themeLight = createMuiTheme({
     ...theme,
     palette: {
+      ...theme.palette,
       type: 'light',
-      primary: {
-        main: primaryColor()
-      },
-      secondary: {
-        main: secondaryColor()
-      },
       background: {
         default: 'rgba(250, 250, 250, 0.87)',
         paper: '#ffff'
@@ -78,13 +52,9 @@ const ThemeContextProvider: React.FC = ({ children }) => {
   const themeDark = createMuiTheme({
     ...theme,
     palette: {
+      ...theme.palette,
       type: 'dark',
-      primary: {
-        main: primaryColor()
-      },
-      secondary: {
-        main: secondaryColor()
-      },
+
       background: {
         default: '#100c18',
         paper: '#27262a'

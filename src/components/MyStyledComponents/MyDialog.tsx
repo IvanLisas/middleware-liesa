@@ -4,14 +4,13 @@ import Dialog from '@material-ui/core/Dialog'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    padding: '4px',
     display: 'flex',
     flexDirection: 'column',
-    gap: '16px',
-    fontSize: '1rem',
-    width: 400
+    fontSize: '1rem'
   },
-  dialog: {}
+  dialog: {
+    borderRadius: 12
+  }
 }))
 
 interface DialogProps {
@@ -26,7 +25,7 @@ const MyDialog: React.FC<DialogProps> = (props) => {
   const { setOpen, open, children } = props
 
   return (
-    <Dialog className={classes.dialog} onClose={() => setOpen(false)} open={open}>
+    <Dialog onClose={() => setOpen(false)} open={open} classes={{ paper: classes.dialog }}>
       <div className={classes.root}>{children}</div>
     </Dialog>
   )
