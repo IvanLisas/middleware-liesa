@@ -1,20 +1,18 @@
 import axios from 'axios'
-import { SERVER_URL } from '../config/Rest'
+import { MELI_URL } from '../config/Rest'
 import { CategoryMeli } from '../types/CategoryMeli'
 
 class MeliService {
   axiosConfig = {
     headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'User-Agent': ''
+      'Access-Control-Allow-Origin': '*'
     }
   }
 
   async getGategory(id: string) {
     let categoriesJSON: [] = []
 
-    await axios.get(`${SERVER_URL}/categories/${id}`, this.axiosConfig).then((response) => {
+    await axios.get(`${MELI_URL}/categories/${id}`, this.axiosConfig).then((response) => {
       categoriesJSON = response.data.children_categories
     })
 
@@ -23,8 +21,7 @@ class MeliService {
 
   async getGategories() {
     let categoriesJSON: [] = []
-    console.log()
-    await axios.get(`${SERVER_URL}/sites/MLA/categories'`, this.axiosConfig).then((response) => {
+    await axios.get(`${MELI_URL}/sites/MLA/categories`, this.axiosConfig).then((response) => {
       categoriesJSON = response.data
       console.log(categoriesJSON)
     })
@@ -33,4 +30,6 @@ class MeliService {
   }
 }
 
-export const meliService = new MeliService()
+const meliService = new MeliService()
+
+export default meliService

@@ -1,7 +1,7 @@
 import createBrand, { Brand } from '../types/Brand'
 
 class BrandStub {
-  morotora = createBrand(1, 'Morotola')
+  morotora = createBrand(1, 'Motorola')
   apple = createBrand(2, 'Apple')
   microsoft = createBrand(3, 'Microsoft')
   astro = createBrand(4, 'Astro')

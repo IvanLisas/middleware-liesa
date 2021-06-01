@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { Icon, Button, ButtonGroup, Divider } from '@material-ui/core'
+import React, { useState } from 'react'
+import { Icon, Button, ButtonGroup } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import MyDialog from '../../../../components/MyStyledComponents/MyDialog'
 import brandStub from '../../../../stubs/BrandStub'
@@ -8,20 +8,35 @@ import MySearchBar from '../../../../components/MyStyledComponents/MySearchBar'
 import useGlobalStyle from '../../../../styles/globalStyles'
 import MyBreadcrumbs from './Components/MyBreadcrumbs'
 import measureDomNode from './Tools/MeasureDomNode'
+import meliService from '../../../../services/MeliService'
+import { useEffect } from 'react'
+import { CategoryMeli } from '../../../../types/CategoryMeli'
+import { useSnackbar } from 'notistack'
+import clsx from 'clsx'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
     gap: 16,
-    minWidth: 600
+    minWidth: 600,
+    padding: 16
   },
   tittle: {
     fontSize: '24px',
-    padding: '16px 16px 0px 16px',
     display: 'flex',
-    flexDirection: 'column',
-    gap: 4
+    flexDirection: 'column'
+  },
+  categoryBottonGroup: {
+    width: '100%',
+    maxHeight: 300
+  },
+  categoryButton: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+    fontWeight: 500
   }
 }))
 
@@ -35,80 +50,105 @@ const ChangeCategoryDialog: React.FC<ChangeCategoryDialogProps> = (props) => {
 
   const classesGlobal = useGlobalStyle()
 
-  const [categorias, setCategorias] = useState<string[]>([])
+  const [categoriesPath, setCategoriesPath] = useState<CategoryMeli[]>([])
 
-  const [categorias2, setCategorias2] = useState(categorias)
+  const [categoriesPath2, setCategoriesPath2] = useState<CategoryMeli[]>([])
 
-  const [altura, setAltura] = useState(0)
+  const [categories, setCategories] = useState<CategoryMeli[]>([])
 
   const [value, setValue] = useState(brandStub.getRandomBrand.name)
 
   const { setOpen, open } = props
 
-  const handleChange = (event) => {
-    setValue(event.target.value)
-  }
+  const handleChange = (event) => setValue(event.target.value)
+
+  const { enqueueSnackbar } = useSnackbar()
 
   const handleCancel = () => setOpen(false)
 
-  const copiar = () => {
-    setCategorias2([...categorias, 'Categoria ' + categorias.length])
-    setAltura(measureDomNode(<MyBreadcrumbs categories={categorias2} />).width)
+  const [count, setCount] = useState<number>(0)
+
+  const addCategory = async (newcategory: CategoryMeli) => {
+    try {
+      let count = 0
+      await getCategory(newcategory)
+      categoriesPath.push(newcategory)
+      //TODO este while podria traer problemas?
+      while (
+        measureDomNode(
+          <MyBreadcrumbs
+            categories={categoriesPath}
+            categories2={categoriesPath2}
+            handleChangeCategory={handleChangeCategory}
+          />
+        ).width > 560
+      ) {
+        count++
+        categoriesPath2.push(categoriesPath[0])
+        categoriesPath.shift()
+      }
+      setCategoriesPath([...categoriesPath])
+      setCount(count)
+    } catch (error) {
+      enqueueSnackbar('Error al obtener la categeoria: ' + error.message, { variant: 'error' })
+    }
   }
 
+  const getCategory = async (category: CategoryMeli) => setCategories(await meliService.getGategory(category.id))
+
   useEffect(() => {
-    console.log(altura, altura < 560)
-    if (altura < 500) {
-      //es la altura del fuente mas padding del bread (8)
-      categorias.push('Categoria ' + categorias.length)
-      setCategorias([...categorias])
+    const getCategories = async () => {
+      try {
+        setCategories(await meliService.getGategories())
+      } catch (error) {
+        enqueueSnackbar('Error al obtener las categeorias: ' + error.message, { variant: 'error' })
+      }
     }
-  }, [altura])
+
+    getCategories()
+  }, [])
+
+  const finalCategory = categories.length == 0
+
+  const handleChangeCategory = async (category) => {
+    console.log(count)
+  }
 
   return (
     <MyDialog setOpen={setOpen} open={open}>
       <div className={classes.root}>
-        <div className={classes.tittle}>
-          <a>Cambiar categoria</a>
-          <Divider />
-        </div>
-
-        <div style={{ width: '100%', padding: '4px 16px' }}>
-          <MySearchBar></MySearchBar>
-        </div>
-
-        <MyBreadcrumbs categories={categorias} />
-
-        <div style={{ maxHeight: 350 }}>
-          <ButtonGroup
-            orientation="vertical"
-            color="primary"
-            aria-label="vertical contained primary button group"
-            variant="outlined"
-            style={{ width: '100%', padding: '0px 16px' }}
-          >
-            {brandStub.brands.map((brand, index) => (
-              <Button
-                key={brand.name + index}
-                color="default"
-                style={{ display: 'flex', justifyContent: 'space-between', width: '100%', fontWeight: 500 }}
-                onClick={() => copiar()}
-              >
-                <div />
-                {brand.name}
-
-                <Icon>chevron_right</Icon>
-              </Button>
-            ))}
-          </ButtonGroup>
-        </div>
-        <div style={{ padding: '0px 16px 16px' }}>
-          <div className={classesGlobal.endButtonContainer}>
-            <MyButton variant="contained" color="primary" autoFocus onClick={handleCancel}>
-              Confirmar
-            </MyButton>
-            <MyButton onClick={handleCancel}>Cancelar</MyButton>
-          </div>
+        <div className={classes.tittle}>Cambiar categorias</div>
+        <MySearchBar></MySearchBar>
+        <MyBreadcrumbs
+          categories={categoriesPath}
+          categories2={categoriesPath2}
+          handleChangeCategory={handleChangeCategory}
+        />
+        <ButtonGroup
+          className={clsx(classes.categoryBottonGroup, classesGlobal.scrollbarStyles)}
+          orientation="vertical"
+          color="primary"
+          aria-label="vertical contained primary button group"
+          variant="outlined"
+        >
+          {categories.map((category, index) => (
+            <Button
+              className={classes.categoryButton}
+              key={category.name + index}
+              color="default"
+              onClick={() => addCategory(category)}
+            >
+              <div />
+              {category.name}
+              <Icon>chevron_right</Icon>
+            </Button>
+          ))}
+        </ButtonGroup>
+        <div className={classesGlobal.endButtonContainer}>
+          <MyButton disabled={!finalCategory} variant="contained" color="primary" autoFocus onClick={handleCancel}>
+            Confirmar
+          </MyButton>
+          <MyButton onClick={handleCancel}>Cancelar</MyButton>
         </div>
       </div>
     </MyDialog>
