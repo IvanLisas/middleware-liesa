@@ -10,16 +10,25 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { CategoryMeli } from '../../../../../types/CategoryMeli'
 
 const useStyles = makeStyles((theme) => ({
-  root: {}
+  root: {},
+  category: {
+    cursor: 'pointer'
+  }
 }))
 
 interface MyBreadcrumbsProps {
   categories: CategoryMeli[]
   categories2: CategoryMeli[]
   handleChangeCategory: (categories: CategoryMeli) => void
+  resetCategories: () => void
 }
 
-const MyBreadcrumbs: React.FC<MyBreadcrumbsProps> = ({ categories, categories2, handleChangeCategory }) => {
+const MyBreadcrumbs: React.FC<MyBreadcrumbsProps> = ({
+  categories,
+  categories2,
+  handleChangeCategory,
+  resetCategories
+}) => {
   const classes = useStyles()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -32,6 +41,13 @@ const MyBreadcrumbs: React.FC<MyBreadcrumbsProps> = ({ categories, categories2, 
     setAnchorEl(null)
   }
 
+  const handleChangeCategoryClick = (category) => {
+    handleChangeCategory(category)
+    setAnchorEl(null)
+  }
+
+  const finalCategory = categories[categories.length - 1].children_categories
+
   return (
     <Breadcrumbs
       className={classes.root}
@@ -39,6 +55,9 @@ const MyBreadcrumbs: React.FC<MyBreadcrumbsProps> = ({ categories, categories2, 
       separator={<NavigateNextIcon fontSize="small" />}
       aria-label="breadcrumb"
     >
+      <a className={classes.category} onClick={() => resetCategories()}>
+        Categorias
+      </a>
       {categories2.length !== 0 && (
         <div>
           <Button style={{ minWidth: '0px' }} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
@@ -47,13 +66,13 @@ const MyBreadcrumbs: React.FC<MyBreadcrumbsProps> = ({ categories, categories2, 
 
           <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
             {categories2.map((category, index) => (
-              <MenuItem onClick={handleClose}>{category.name}</MenuItem>
+              <MenuItem onClick={() => handleChangeCategoryClick(category)}>{category.name}</MenuItem>
             ))}
           </Menu>
         </div>
       )}
       {categories.map((category, index) => (
-        <a key={category.name + index} onClick={() => handleChangeCategory(category)}>
+        <a key={category.name + index} className={classes.category} onClick={() => handleChangeCategory(category)}>
           {category.name}
         </a>
       ))}
