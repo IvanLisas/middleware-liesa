@@ -110,8 +110,35 @@ const ChangeCategoryDialog: React.FC<ChangeCategoryDialogProps> = (props) => {
 
   const finalCategory = categories.length == 0
 
-  const handleChangeCategory = async (category) => {
-    console.log(count)
+  const handleChangeCategory = async (newcategory) => {
+    categoriesPath.forEach((category) => categoriesPath2.push(category))
+
+    const index = categoriesPath2.map((category) => category.name).indexOf(newcategory.name)
+    const list = categoriesPath2.slice(0, index + 1)
+    const list2: CategoryMeli[] = []
+    console.log(categoriesPath2)
+    console.log(list)
+
+    await getCategory(newcategory)
+
+    let count = 0
+
+    //TODO este while podria traer problemas?
+    while (
+      measureDomNode(
+        <MyBreadcrumbs categories={list} categories2={list2} handleChangeCategory={handleChangeCategory} />
+      ).width > 560
+    ) {
+      count++
+      list2.push(categoriesPath[0])
+      list.shift()
+    }
+
+    //TODO este while podria traer problemas?
+
+    setCategoriesPath([...list])
+    setCategoriesPath2([...list2])
+    setCount(count)
   }
 
   return (
