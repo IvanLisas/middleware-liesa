@@ -54,7 +54,7 @@ const ChangeCategoryDialog: React.FC<ChangeCategoryDialogProps> = (props) => {
 
   const [categoriesPath2, setCategoriesPath2] = useState<CategoryMeli[]>([])
 
-  const [categories, setCategories] = useState<CategoryMeli[]>([])
+  const [categories, setCategoriesToShow] = useState<CategoryMeli[]>([])
 
   const [value, setValue] = useState(brandStub.getRandomBrand.name)
 
@@ -80,6 +80,7 @@ const ChangeCategoryDialog: React.FC<ChangeCategoryDialogProps> = (props) => {
             categories={categoriesPath}
             categories2={categoriesPath2}
             handleChangeCategory={handleChangeCategory}
+            resetCategories={resetCategories}
           />
         ).width > 560
       ) {
@@ -94,12 +95,12 @@ const ChangeCategoryDialog: React.FC<ChangeCategoryDialogProps> = (props) => {
     }
   }
 
-  const getCategory = async (category: CategoryMeli) => setCategories(await meliService.getGategory(category.id))
+  const getCategory = async (category: CategoryMeli) => setCategoriesToShow(await meliService.getGategory(category.id))
 
   useEffect(() => {
     const getCategories = async () => {
       try {
-        setCategories(await meliService.getGategories())
+        setCategoriesToShow(await meliService.getGategories())
       } catch (error) {
         enqueueSnackbar('Error al obtener las categeorias: ' + error.message, { variant: 'error' })
       }
@@ -126,7 +127,12 @@ const ChangeCategoryDialog: React.FC<ChangeCategoryDialogProps> = (props) => {
     //TODO este while podria traer problemas?
     while (
       measureDomNode(
-        <MyBreadcrumbs categories={list} categories2={list2} handleChangeCategory={handleChangeCategory} />
+        <MyBreadcrumbs
+          resetCategories={resetCategories}
+          categories={list}
+          categories2={list2}
+          handleChangeCategory={handleChangeCategory}
+        />
       ).width > 560
     ) {
       count++
@@ -141,12 +147,23 @@ const ChangeCategoryDialog: React.FC<ChangeCategoryDialogProps> = (props) => {
     setCount(count)
   }
 
+  const resetCategories = async () => {
+    try {
+      setCategoriesToShow(await meliService.getGategories())
+      setCategoriesPath([...[]])
+      setCategoriesPath2([...[]])
+    } catch (error) {
+      enqueueSnackbar('Error al obtener las categeorias: ' + error.message, { variant: 'error' })
+    }
+  }
+
   return (
     <MyDialog setOpen={setOpen} open={open}>
       <div className={classes.root}>
         <div className={classes.tittle}>Cambiar categorias</div>
         <MySearchBar></MySearchBar>
         <MyBreadcrumbs
+          resetCategories={resetCategories}
           categories={categoriesPath}
           categories2={categoriesPath2}
           handleChangeCategory={handleChangeCategory}
