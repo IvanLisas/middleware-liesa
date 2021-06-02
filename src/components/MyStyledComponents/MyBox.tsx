@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: ' flex',
     justifyContent: 'center',
-    /*     alignItems: 'center', */
+    alignItems: 'center',
     width: '100%',
     backgroundColor: theme.palette.background.default,
     //Tiene que depender del tamaño del nav

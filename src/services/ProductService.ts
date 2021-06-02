@@ -4,12 +4,13 @@ import { Data } from '../types/Data'
 import rows from '../stubs/DataStub'
 import { Product } from '../types/Product'
 import { ProductDetail } from '../types/ProductDetailt'
+import productStub from '../stubs/ProductStub'
 
 class ProductService {
-  productDetail: ProductDetail | undefined
+  product: Product | undefined
 
-  getProductsMock(): Data[] {
-    return rows
+  getProductsMock(): Product[] {
+    return productStub.products
   }
 
   async getProducts() {
@@ -20,7 +21,11 @@ class ProductService {
 
   async getProduct(product_id: number) {
     const productJSON = await axios.get(`${SERVER_URL}/api/catalog/products/detail/${product_id}`)
-    this.productDetail = productJSON.data as ProductDetail
+    this.product = productJSON.data as Product
+  }
+
+  getProductMock(product_id: number): void {
+    this.product = productStub.products[product_id]
   }
 }
 

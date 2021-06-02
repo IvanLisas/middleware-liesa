@@ -13,7 +13,7 @@ export const ThemeContextDispatch = createContext<ThemeContextDispatchProps>({
 })
 
 const ThemeContextProvider: React.FC = ({ children }) => {
-  const [isDark, setIsDark] = useState(true) //Initial palette style
+  const [isDark, setIsDark] = useState(false) //Initial palette style
 
   const paletteStyle = () => (isDark ? themeDark : themeLight)
 

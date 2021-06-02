@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import { CategoryMeli } from '../../../../../types/CategoryMeli'
+import Typography from '@material-ui/core/Typography'
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -46,8 +47,6 @@ const MyBreadcrumbs: React.FC<MyBreadcrumbsProps> = ({
     setAnchorEl(null)
   }
 
-  const finalCategory = categories[categories.length - 1].children_categories
-
   return (
     <Breadcrumbs
       className={classes.root}
@@ -66,17 +65,21 @@ const MyBreadcrumbs: React.FC<MyBreadcrumbsProps> = ({
 
           <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
             {categories2.map((category, index) => (
-              <MenuItem onClick={() => handleChangeCategoryClick(category)}>{category.name}</MenuItem>
+              <MenuItem key={category.name + 'item' + index} onClick={() => handleChangeCategoryClick(category)}>
+                {category.name}
+              </MenuItem>
             ))}
           </Menu>
         </div>
       )}
-      {categories.map((category, index) => (
+      {categories.slice(0, -1).map((category, index) => (
         <a key={category.name + index} className={classes.category} onClick={() => handleChangeCategory(category)}>
           {category.name}
         </a>
       ))}
-      {/*<Typography color="textPrimary">Categoria final</Typography> */}
+      {categories[categories.length - 1] && (
+        <Typography color="textPrimary">{categories[categories.length - 1].name}</Typography>
+      )}
     </Breadcrumbs>
   )
 }

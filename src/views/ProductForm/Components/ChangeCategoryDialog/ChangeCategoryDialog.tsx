@@ -21,7 +21,8 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     gap: 16,
     minWidth: 600,
-    padding: 16
+    padding: 16,
+    height: 568
   },
   tittle: {
     fontSize: '24px',
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
   categoryBottonGroup: {
     width: '100%',
-    maxHeight: 300
+    height: '100%'
   },
   categoryButton: {
     display: 'flex',
@@ -52,7 +53,7 @@ const ChangeCategoryDialog: React.FC<ChangeCategoryDialogProps> = (props) => {
 
   const [categoriesPath, setCategoriesPath] = useState<CategoryMeli[]>([])
 
-  const [categoriesPath2, setCategoriesPath2] = useState<CategoryMeli[]>([])
+  const [categoriesPathStack, setCategoriesPath2] = useState<CategoryMeli[]>([])
 
   const [categories, setCategoriesToShow] = useState<CategoryMeli[]>([])
 
@@ -78,16 +79,17 @@ const ChangeCategoryDialog: React.FC<ChangeCategoryDialogProps> = (props) => {
         measureDomNode(
           <MyBreadcrumbs
             categories={categoriesPath}
-            categories2={categoriesPath2}
+            categories2={categoriesPathStack}
             handleChangeCategory={handleChangeCategory}
             resetCategories={resetCategories}
           />
         ).width > 560
       ) {
         count++
-        categoriesPath2.push(categoriesPath[0])
+        categoriesPathStack.push(categoriesPath[0])
         categoriesPath.shift()
       }
+      console.log(categoriesPathStack, categoriesPath)
       setCategoriesPath([...categoriesPath])
       setCount(count)
     } catch (error) {
@@ -112,16 +114,15 @@ const ChangeCategoryDialog: React.FC<ChangeCategoryDialogProps> = (props) => {
   const finalCategory = categories.length == 0
 
   const handleChangeCategory = async (newcategory) => {
-    categoriesPath.forEach((category) => categoriesPath2.push(category))
-
-    const index = categoriesPath2.map((category) => category.name).indexOf(newcategory.name)
-    const list = categoriesPath2.slice(0, index + 1)
+    console.log(categoriesPathStack, categoriesPath)
+    categoriesPath.forEach((category) => categoriesPathStack.push(category))
+    console.log(categoriesPathStack)
+    const index = categoriesPathStack.map((category) => category.name).indexOf(newcategory.name)
+    const list = categoriesPathStack.slice(0, index + 1)
     const list2: CategoryMeli[] = []
-    console.log(categoriesPath2)
-    console.log(list)
 
     await getCategory(newcategory)
-
+    console.log(list)
     let count = 0
 
     //TODO este while podria traer problemas?
@@ -136,12 +137,12 @@ const ChangeCategoryDialog: React.FC<ChangeCategoryDialogProps> = (props) => {
       ).width > 560
     ) {
       count++
-      list2.push(categoriesPath[0])
+      list2.push(list[0])
       list.shift()
     }
 
     //TODO este while podria traer problemas?
-
+    console.log(list, list2)
     setCategoriesPath([...list])
     setCategoriesPath2([...list2])
     setCount(count)
@@ -165,7 +166,7 @@ const ChangeCategoryDialog: React.FC<ChangeCategoryDialogProps> = (props) => {
         <MyBreadcrumbs
           resetCategories={resetCategories}
           categories={categoriesPath}
-          categories2={categoriesPath2}
+          categories2={categoriesPathStack}
           handleChangeCategory={handleChangeCategory}
         />
         <ButtonGroup
@@ -174,6 +175,7 @@ const ChangeCategoryDialog: React.FC<ChangeCategoryDialogProps> = (props) => {
           color="primary"
           aria-label="vertical contained primary button group"
           variant="outlined"
+          size="large"
         >
           {categories.map((category, index) => (
             <Button
@@ -187,7 +189,9 @@ const ChangeCategoryDialog: React.FC<ChangeCategoryDialogProps> = (props) => {
               <Icon>chevron_right</Icon>
             </Button>
           ))}
+          {finalCategory && <a>Sin childrens! Se mostrarian los atributos</a>}
         </ButtonGroup>
+
         <div className={classesGlobal.endButtonContainer}>
           <MyButton disabled={!finalCategory} variant="contained" color="primary" autoFocus onClick={handleCancel}>
             Confirmar

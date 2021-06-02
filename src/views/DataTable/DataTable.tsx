@@ -17,12 +17,8 @@ import MyTableHead from './Components/MyTableHead'
 import { Product } from '../../types/Product'
 import { useHistory } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
-import { trackPromise } from 'react-promise-tracker'
-import LoadingCircularProgress from '../../components/LoadingComponents/LoadingCircularProgress'
-import Skeleton from '@material-ui/lab/Skeleton'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import LinearProgress from '@material-ui/core/LinearProgress'
 import LoadingLinearProgress from '../../components/LoadingComponents/LoadingLinearProgress'
+import productStub from '../../stubs/ProductStub'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme: Theme) =>
@@ -41,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'space-between'
     },
     tableContainer: {
-      height: 'calc(100vh - 245px)' //TODO: Estos 237px tendrian que depender de componentes
+      height: 'calc(100vh - 280px)' //TODO: Estos 237px tendrian que depender de componentes
     },
     bottomContainer: {
       display: 'flex',
@@ -87,7 +83,8 @@ const DataTable: React.FC = () => {
 
   const handleGoToProductClick = async (event: React.MouseEvent<unknown>, id: number) => {
     try {
-      await productService.getProduct(id)
+      // await productService.getProduct(id)
+      productService.getProductMock(id)
       history.push('/productDetail/' + id)
     } catch (error) {
       enqueueSnackbar('Error al obtener el producto, vuelva a intentarlo', { variant: 'error' })
@@ -129,8 +126,8 @@ const DataTable: React.FC = () => {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        setRows([...(await trackPromise(productService.getProducts()))])
-        //setRows([...productStub.products])
+        // setRows([...(await trackPromise(productService.getProducts()))])
+        setRows([...productStub.products])
         setLoading(false)
       } catch (error) {
         console.log(error)
