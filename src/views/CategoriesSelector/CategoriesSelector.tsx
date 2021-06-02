@@ -23,7 +23,7 @@ const CategoriesSelector: React.FC = () => {
   const [routes, setRoutes] = useState<string[]>(['hola', 'hola2'])
 
   const handleCategory = async (category: CategoryMeli) => {
-    setCategories(await meliService.getGategory(category.id))
+    setCategories(await meliService.getChildrenGategories(category.id))
     setRoutes([...routes, category.name])
   }
 

@@ -72,7 +72,7 @@ const ChangeCategoryDialog: React.FC<ChangeCategoryDialogProps> = (props) => {
   const addCategory = async (newcategory: CategoryMeli) => {
     try {
       let count = 0
-      await getCategory(newcategory)
+      await getChildrenCategories(newcategory)
       categoriesPath.push(newcategory)
       //TODO este while podria traer problemas?
       while (
@@ -97,7 +97,8 @@ const ChangeCategoryDialog: React.FC<ChangeCategoryDialogProps> = (props) => {
     }
   }
 
-  const getCategory = async (category: CategoryMeli) => setCategoriesToShow(await meliService.getGategory(category.id))
+  const getChildrenCategories = async (category: CategoryMeli) =>
+    setCategoriesToShow(await meliService.getChildrenGategories(category.id))
 
   useEffect(() => {
     const getCategories = async () => {
@@ -121,7 +122,7 @@ const ChangeCategoryDialog: React.FC<ChangeCategoryDialogProps> = (props) => {
     const list = categoriesPathStack.slice(0, index + 1)
     const list2: CategoryMeli[] = []
 
-    await getCategory(newcategory)
+    await getChildrenCategories(newcategory)
     console.log(list)
     let count = 0
 

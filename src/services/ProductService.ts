@@ -1,12 +1,10 @@
 import axios from 'axios'
 import { SERVER_URL } from '../config/Rest'
-import { Data } from '../types/Data'
-import rows from '../stubs/DataStub'
 import { Product } from '../types/Product'
-import { ProductDetail } from '../types/ProductDetailt'
 import productStub from '../stubs/ProductStub'
 
 class ProductService {
+  //TODO conte
   product: Product | undefined
 
   getProductsMock(): Product[] {

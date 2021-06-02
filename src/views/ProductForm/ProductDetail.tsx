@@ -82,6 +82,7 @@ const ProductForm: React.FC = () => {
             <Icon color="primary">content_paste</Icon>
             <a className={classes.tittle}>Detalle del producto</a>
           </div>
+          <Divider />
           <div className={classes.attributeGrid}>
             <div className={classes.labelWithIcon}>
               <Icon color="primary">chevron_right</Icon>

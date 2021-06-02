@@ -9,24 +9,14 @@ class MeliService {
     }
   }
 
-  async getGategory(id: string) {
-    let categoriesJSON: [] = []
-
-    await axios.get(`${MELI_URL}/categories/${id}`, this.axiosConfig).then((response) => {
-      categoriesJSON = response.data.children_categories
-    })
-
-    return categoriesJSON as CategoryMeli[]
+  async getChildrenGategories(id: string) {
+    const categoryJSON = await axios.get(`${MELI_URL}/categories/${id}`, this.axiosConfig)
+    return categoryJSON.data.children_categories as CategoryMeli[]
   }
 
   async getGategories() {
-    let categoriesJSON: [] = []
-    await axios.get(`${MELI_URL}/sites/MLA/categories`, this.axiosConfig).then((response) => {
-      categoriesJSON = response.data
-      console.log(categoriesJSON)
-    })
-
-    return categoriesJSON as CategoryMeli[]
+    const categoriesJSON = await axios.get(`${MELI_URL}/sites/MLA/categories`, this.axiosConfig)
+    return categoriesJSON.data as CategoryMeli[]
   }
 }
 
