@@ -14,6 +14,8 @@ import TwitterIcon from '@material-ui/icons/Twitter'
 import useGlobalStyle from '../../../../styles/globalStyles'
 import Divider from '@material-ui/core/Divider'
 import { itemList } from './Itemlist'
+import watchScroll from '../../../../utils/WatchScroll'
+import { useObservable } from 'rxjs-hooks/dist/cjs/use-observable'
 
 interface StyleProps {
   marginTop: number
@@ -27,7 +29,8 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column'
   },
   drawer: {
-    marginTop: (props: StyleProps) => props.marginTop,
+    /* marginTop: (props: StyleProps) => props.marginTop, */
+    paddingTop: 65,
     width: appBarwidth,
     flexShrink: 0,
     whiteSpace: 'nowrap',
@@ -35,21 +38,27 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     justifyContent: 'space-between',
     backgroundColor: theme.palette.background.paper,
-    maxHeight: (props: StyleProps) => `calc(100% - ${props.marginTop}px)`,
+    height: '100vh',
     overflowX: 'hidden',
-    boxShadow: '0px 0px 20px rgb(0 0 0 / 20%)'
+    boxShadow: '0px 0px 20px rgb(0 0 0 / 20%)',
+    transition: 'padding-top 0.2s ease 0s, width 0.2s cubic-bezier(0.4, 0, 0.2, 1) 0s',
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 0
   },
+  drawerTop: {
+    paddingTop: 0
+  },
+
   drawerOpen: {
-    transition: theme.transitions.create('width', {
+    /*     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen
-    })
+    }) */
   },
   drawerClose: {
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    }),
     width: theme.spacing(7) + 1,
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(7) + 8 //Probar en docker
@@ -89,29 +98,25 @@ const MyDrawer: React.FC<MyDrawerProps> = ({ marginTop }) => {
 
   const classesGlobal = useGlobalStyle()
 
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
 
   const { user } = useContext(UserContext)
 
   const { isDark, setIsDark } = useContext(ThemeContextDispatch)
 
+  const scrollDirection = useObservable(watchScroll, 'Up')
+
   if (!user) return null
 
   return (
-    <Drawer
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-      variant="permanent"
-      className={clsx(classes.drawer, {
+    <div
+      /*       onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)} */
+      className={clsx(classes.drawer, classesGlobal.scrollbarStyles, {
         [classes.drawerOpen]: open,
-        [classes.drawerClose]: !open
+        [classes.drawerClose]: !open,
+        [classes.drawerTop]: scrollDirection === 'Down' && 'hidden'
       })}
-      classes={{
-        paper: clsx(classes.drawer, classesGlobal.scrollbarStyles, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open
-        })
-      }}
     >
       <List className={classes.itemList}>
         {itemList.map((item, index) => (
@@ -164,7 +169,7 @@ const MyDrawer: React.FC<MyDrawerProps> = ({ marginTop }) => {
           )}
         </div>
       </div>
-    </Drawer>
+    </div>
   )
 }
 

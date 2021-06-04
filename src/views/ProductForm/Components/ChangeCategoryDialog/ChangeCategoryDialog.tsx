@@ -13,6 +13,8 @@ import { useEffect } from 'react'
 import { CategoryMeli } from '../../../../types/CategoryMeli'
 import { useSnackbar } from 'notistack'
 import clsx from 'clsx'
+import TextField from '@material-ui/core/TextField'
+import Divider from '@material-ui/core/Divider'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme) => ({
@@ -38,6 +40,17 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     width: '100%',
     fontWeight: 500
+  },
+  attributeGrid: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: 24
+  },
+  labelWithIcon: {
+    display: 'flex',
+    gap: 8,
+    alignItems: 'center',
+    fontSize: '1rem'
   }
 }))
 
@@ -190,7 +203,74 @@ const ChangeCategoryDialog: React.FC<ChangeCategoryDialogProps> = (props) => {
               <Icon>chevron_right</Icon>
             </Button>
           ))}
-          {finalCategory && <a>Sin childrens! Se mostrarian los atributos</a>}
+          {finalCategory && (
+            /*  <div
+              style={{
+                display: 'flex',
+                height: '100%',
+                width: '100%',
+
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 20
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  fontSize: '1.5rem'
+                }}
+              >
+                <Icon
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    fontSize: '1.5rem'
+                  }}
+                  color="primary"
+                >
+                  inventory_2
+                </Icon>
+                <a>Sin childrens!</a>
+              </div>
+            </div> */
+            <div
+              style={{
+                display: 'flex',
+                /*   height: '100%', */
+                width: '100%',
+                gap: 16,
+                paddingBottom: 8,
+                fontSize: 20,
+                flexDirection: 'column'
+              }}
+            >
+              <div className={classes.labelWithIcon}>
+                <Icon color="primary">inventory_2</Icon>
+                <a className={classes.tittle}>Atributos</a>
+              </div>
+
+              <div className={classes.attributeGrid}>
+                <div className={classes.labelWithIcon}>
+                  <Icon color="primary">chevron_right</Icon>
+                  <TextField variant="outlined" label="Peso" value="34 KG" />
+                </div>
+                <div className={classes.labelWithIcon}>
+                  <Icon color="primary">chevron_right</Icon>
+                  <TextField variant="outlined" label="Alto" value="4.5 Metros" />
+                </div>
+                <div className={classes.labelWithIcon}>
+                  <Icon color="primary">chevron_right</Icon>
+                  <TextField variant="outlined" label="Largo" value="1 Metro" />
+                </div>
+                <div className={classes.labelWithIcon}>
+                  <Icon color="primary">chevron_right</Icon>
+                  <TextField variant="outlined" label="Ancho" value="1.3 Centimetros" />
+                </div>
+              </div>
+            </div>
+          )}
         </ButtonGroup>
 
         <div className={classesGlobal.endButtonContainer}>

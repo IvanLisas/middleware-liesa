@@ -12,9 +12,10 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     width: '100%',
     backgroundColor: theme.palette.background.default,
-    //Tiene que depender del tamaño del nav
-    marginTop: 65,
-    padding: 12
+    marginLeft: 260,
+    marginTop: appBarHeight,
+    padding: 12,
+    flexFlow: 'row wrap'
   },
 
   box: {

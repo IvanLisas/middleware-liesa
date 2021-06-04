@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -9,28 +9,37 @@ import { ThemeContextDispatch } from '../../../contexts/ThemeContext'
 import Avatar from '@material-ui/core/Avatar'
 import Badge from '@material-ui/core/Badge'
 import NotificationsIcon from '@material-ui/icons/Notifications'
-
+import { debounce } from '@material-ui/core/utils'
+import clsx from 'clsx'
+import { of, fromEvent, animationFrameScheduler } from 'rxjs'
+import { distinctUntilChanged, filter, map, pairwise, switchMap, throttleTime } from 'rxjs/operators'
+import { useObservable } from 'rxjs-hooks'
+import { getCorrectEventName } from '@material/animation'
+import watchScroll from '../../../utils/WatchScroll'
 interface StyleProps {
   height: number
 }
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  appBar: {
-    backgroundColor: theme.palette.primary.main,
-    borderBottom: '2px solid rgba(133, 133, 133, 0.1)',
-    height: (props: StyleProps) => props.height,
+  navbar: {
+    /* backgroundColor: theme.palette.primary.main, */
+    /*  borderBottom: '2px solid rgba(133, 133, 133, 0.1)', */
+    /*   height: (props: StyleProps) => props.height, */
     boxShadow: '0px 0px 20px rgb(0 0 0 / 50%)',
     display: 'flex',
-    justifyContent: 'center'
-  },
-  toolbar: {
-    display: 'flex',
     justifyContent: 'space-between',
-    background: 'linear-gradient(139.73deg, #399ead 0%, #399ead 100%)'
+    background: 'linear-gradient(139.73deg, #399ead 0%, #399ead 100%)',
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: '64px',
+    transition: 'top 0.2s ease 0s',
+    zIndex: 1,
+    padding: '0px 16px'
+  },
+  navbarHidden: {
+    top: '-65px'
   },
   icon: {
     color: 'white'
@@ -49,14 +58,14 @@ const useStyles = makeStyles((theme) => ({
     width: '150px',
     height: '18px'
   },
-  toolbarLeft: {
+  navbarLeft: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
   },
-  toolbarRight: {
+  navbarRight: {
     display: 'flex',
-    width: '14%',
+    /*     width: '14%', */
     alignItems: 'center',
     justifyContent: 'space-between'
   },
@@ -86,6 +95,8 @@ const MyAppBar: React.FC<MyAppBarProps> = ({ height }) => {
 
   const history = useHistory()
 
+  const scrollDirection = useObservable(watchScroll, 'Up')
+
   const { user } = useContext(UserContext)
 
   const { isDark } = useContext(ThemeContextDispatch)
@@ -101,32 +112,34 @@ const MyAppBar: React.FC<MyAppBarProps> = ({ height }) => {
   if (!user) return null
 
   return (
-    <AppBar className={classes.appBar}>
-      <Toolbar className={classes.toolbar}>
-        <div className={classes.toolbarLeft}>
-          {/* <IconButton onClick={handleDrawer} edge="start" className={clsx(classes.icon)}>
+    <nav
+      className={clsx(classes.navbar, {
+        [classes.navbarHidden]: scrollDirection === 'Down' && 'hidden'
+      })}
+    >
+      <div className={classes.navbarLeft}>
+        {/* <IconButton onClick={handleDrawer} edge="start" className={clsx(classes.icon)}>
               <Icon className={classes.icon}>menu_open</Icon>
             </IconButton> */}
-          <Button size="large" onClick={() => history.push('/home')}>
-            <div className={classes.logoContainer}>
-              <img className={classes.logo} src={isDark ? logoNight : logoLight} />
-              <img className={classes.logoLabel} src={isDark ? labelNight : labelLight} />
-            </div>
-          </Button>
-        </div>
-        <div className={classes.toolbarRight}>
-          <div className={classes.notications}>
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon className={classes.icon} />
-            </Badge>
+        <Button size="large" onClick={() => history.push('/home')}>
+          <div className={classes.logoContainer}>
+            <img className={classes.logo} src={isDark ? logoNight : logoLight} />
+            <img className={classes.logoLabel} src={isDark ? labelNight : labelLight} />
           </div>
-          <div className={classes.userContainer}>
-            <Avatar className={classes.avatar}>{user.username[0]}</Avatar>
-            {user.username}
-          </div>
+        </Button>
+      </div>
+      <div className={classes.navbarRight}>
+        {/*         <div className={classes.notications}>
+          <Badge badgeContent={4} color="secondary">
+            <NotificationsIcon className={classes.icon} />
+          </Badge>
+        </div> */}
+        <div className={classes.userContainer}>
+          <Avatar className={classes.avatar}>{user.username[0]}</Avatar>
+          {user.username}
         </div>
-      </Toolbar>
-    </AppBar>
+      </div>
+    </nav>
   )
 }
 
