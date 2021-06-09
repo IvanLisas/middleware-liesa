@@ -95,7 +95,7 @@ const MyTableToolbar: React.FC<MyTableToolbarProps> = (props) => {
       </Button> */}
       {/*       {open && (
         <Draggable>*/}
-      <div className={classes.filters}>
+      {/*       <div className={classes.filters}>
         <FormControl className={classes.formControl}>
           <InputLabel id="demo-simple-select-label">Columna</InputLabel>
           <Select
@@ -133,7 +133,7 @@ const MyTableToolbar: React.FC<MyTableToolbarProps> = (props) => {
             label="Valor"
           />
         </FormControl>
-      </div>
+      </div> */}
       {/*       <a onClick={() => setOpen(false)} style={{ padding: 8, width: 8 }}>
         X
       </a> */}

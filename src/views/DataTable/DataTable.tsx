@@ -86,8 +86,8 @@ const DataTable: React.FC = () => {
   }
 
   const handleGoToProductClick = (id: number) => {
-    console.log(myRef.current.scrollTop)
-    setScrollYStorage(myRef.current.scrollTop)
+    /*     console.log(myRef.current.scrollTop)
+    setScrollYStorage(myRef.current.scrollTop) */
     history.push('/productDetail/' + id)
   }
 
@@ -122,10 +122,7 @@ const DataTable: React.FC = () => {
 
   const isSelected = (sku: number) => selected.indexOf(sku) !== -1
 
-  // look at this; easy as pie:
-  useWindowScrollPosition('MyAwesomeComponent_ScrollY', !loading)
-
-  // done :)
+  /*   useWindowScrollPosition('MyAwesomeComponent_ScrollY', !loading) */
 
   useEffect(() => {
     const getProducts = async () => {
@@ -151,7 +148,6 @@ const DataTable: React.FC = () => {
 
   return (
     <MyBox>
-      {a}
       <Paper className={classes.paper}>
         <MyTableToolbar numSelected={selected.length} />
         <LoadingLinearProgress />

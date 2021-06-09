@@ -16,6 +16,8 @@ import { distinctUntilChanged, filter, map, pairwise, switchMap, throttleTime } 
 import { useObservable } from 'rxjs-hooks'
 import { getCorrectEventName } from '@material/animation'
 import watchScroll from '../../../utils/WatchScroll'
+import IconButton from '@material-ui/core/IconButton'
+import Icon from '@material-ui/core/Icon'
 interface StyleProps {
   height: number
 }
@@ -97,7 +99,7 @@ const MyAppBar: React.FC<MyAppBarProps> = ({ height }) => {
 
   const scrollDirection = useObservable(watchScroll, 'Up')
 
-  const { user } = useContext(UserContext)
+  const { user, logout } = useContext(UserContext)
 
   const { isDark } = useContext(ThemeContextDispatch)
 
@@ -137,6 +139,9 @@ const MyAppBar: React.FC<MyAppBarProps> = ({ height }) => {
         <div className={classes.userContainer}>
           <Avatar className={classes.avatar}>{user.username[0]}</Avatar>
           {user.username}
+          <IconButton color="inherit" onClick={logout} disableRipple disableFocusRipple>
+            <Icon /* className={classes.icon} */>logout</Icon>
+          </IconButton>
         </div>
       </div>
     </nav>

@@ -156,7 +156,7 @@ const MyDrawer: React.FC<MyDrawerProps> = ({ marginTop }) => {
               >
                 <GitHubIcon />
               </IconButton>
-              <IconButton color="primary" disableRipple disableFocusRipple onClick={logout}>
+              <IconButton color="primary" disableRipple disableFocusRipple>
                 <TwitterIcon />
               </IconButton>
             </div>
