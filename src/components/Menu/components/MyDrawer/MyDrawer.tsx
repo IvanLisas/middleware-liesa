@@ -100,7 +100,7 @@ const MyDrawer: React.FC<MyDrawerProps> = ({ marginTop }) => {
 
   const [open, setOpen] = useState(true)
 
-  const { user } = useContext(UserContext)
+  const { user, logout } = useContext(UserContext)
 
   const { isDark, setIsDark } = useContext(ThemeContextDispatch)
 
@@ -156,13 +156,7 @@ const MyDrawer: React.FC<MyDrawerProps> = ({ marginTop }) => {
               >
                 <GitHubIcon />
               </IconButton>
-              <IconButton
-                color="primary"
-                href="www.google.com.ar"
-                disableRipple
-                disableFocusRipple
-                onClick={() => setIsDark(false)}
-              >
+              <IconButton color="primary" disableRipple disableFocusRipple onClick={logout}>
                 <TwitterIcon />
               </IconButton>
             </div>

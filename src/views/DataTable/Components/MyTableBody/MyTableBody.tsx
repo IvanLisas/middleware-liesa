@@ -4,16 +4,15 @@ import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 import Checkbox from '@material-ui/core/Checkbox'
-import MyChip from './MyChip'
-import MyLinearProgress from './MyLinearProgress'
-import { Product } from '../../../types/Product'
-import { Order } from '../../../types/Order'
-import Markets from './Markets'
+import MyLinearProgress from '../MyLinearProgress'
+import { Product } from '../../../../types/Product'
+import { Order } from '../../../../types/Order'
+import Markets from './components/Markets'
 import IconButton from '@material-ui/core/IconButton'
 import Icon from '@material-ui/core/Icon'
 import { fade } from '@material-ui/core/styles/colorManipulator'
-import LoadingCircularProgress from '../../../components/LoadingComponents/LoadingCircularProgress'
-import Skeleton from '@material-ui/lab/Skeleton'
+import MyChip from './components/MyChip'
+import useWindowScrollPosition from '../../../../hooks/useWindowScrollPosition'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme: Theme) =>
@@ -81,7 +80,7 @@ interface MyTableBodyProps {
   page: number
   rowsPerPage: number
   isSelected: (value: number) => boolean
-  handleClick: (event: React.MouseEvent<unknown>, sku: number) => void
+  handleGoToProductClick: (productId: number) => void
   handleClickCheckBox: (event: React.MouseEvent<unknown>, sku: number) => void
   emptyRows: number
   dense: boolean
@@ -98,7 +97,7 @@ const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
     page,
     rowsPerPage,
     isSelected,
-    handleClick,
+    handleGoToProductClick: handleClick,
     handleClickCheckBox,
     emptyRows,
     dense,
@@ -164,7 +163,7 @@ const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
               <Markets markets={row.activeMarketPlaces} />
             </TableCell>
             <TableCell align="left">
-              <IconButton onClick={(event) => handleClick(event, row.id)}>
+              <IconButton onClick={() => handleClick(row.id)}>
                 <Icon color="primary">edit_note</Icon>
               </IconButton>
             </TableCell>

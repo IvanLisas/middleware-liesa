@@ -1,6 +1,7 @@
 import React, { createContext, useState } from 'react'
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
+import useLocalStorage from '../hooks/useLocalStorage'
 
 interface ThemeContextDispatchProps {
   readonly isDark: boolean
@@ -13,8 +14,10 @@ export const ThemeContextDispatch = createContext<ThemeContextDispatchProps>({
 })
 
 const ThemeContextProvider: React.FC = ({ children }) => {
-  const [isDark, setIsDark] = useState(false) //Initial palette style
+  const [isDark, setIsDark] = useLocalStorage('theme', false) //Initial palette style
 
+  /* const toggleTheme = () => setIsDark(!isDark)
+   */
   const paletteStyle = () => (isDark ? themeDark : themeLight)
 
   const primaryColor = () => '#399ead' //Celeste

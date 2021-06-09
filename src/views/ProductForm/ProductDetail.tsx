@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useHistory, useParams } from 'react-router-dom'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import { Button, Divider, Icon, IconButton } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
@@ -11,6 +11,8 @@ import InputLabel from '@material-ui/core/InputLabel'
 import OutlinedInput from '@material-ui/core/OutlinedInput'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import { Edit } from '@material-ui/icons'
+import { Product } from '../../types/Product'
+import { useSnackbar } from 'notistack'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme: Theme) =>
@@ -60,16 +62,35 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const ProductForm: React.FC = () => {
   const classes = useStyles()
+
   const classesGlobal = useGlobalStyle()
+
   const history = useHistory()
 
-  const [productDetail, setProductDetail] = useState(productService.product)
+  const { enqueueSnackbar } = useSnackbar()
+
+  const [productDetail, setProductDetail] = useState<Product | null>(null)
 
   const [open, setOpen] = useState(false)
 
+  const { id } = useParams<{ id: string }>()
+
   const goHome = () => {
-    history.push('/home')
+    history.goBack()
   }
+
+  useEffect(() => {
+    const getProduct = async () => {
+      try {
+        // await productService.getProduct(Number(id))
+        setProductDetail(productService.getProductMock(Number(id)))
+      } catch (error) {
+        enqueueSnackbar('Error al obtener el producto, vuelva a intentarlo', { variant: 'error' })
+        goHome()
+      }
+    }
+    getProduct()
+  }, [])
 
   if (!productDetail) return null
 

@@ -1,9 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import { Icon } from '@material-ui/core'
-import Chip from '@material-ui/core/Chip'
-import { useEffect } from 'react'
-import { MarketPlace } from '../../../types/MarketPlace'
+import { MarketPlace } from '../../../../../types/MarketPlace'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

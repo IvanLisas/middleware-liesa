@@ -7,7 +7,7 @@ import Paper from '@material-ui/core/Paper'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 import MyBox from '../../components/MyStyledComponents/MyBox'
-import MyTableBody from './Components/MyTableBody'
+import MyTableBody from './Components/MyTableBody/MyTableBody'
 import useGlobalStyle from '../../styles/globalStyles'
 import { productService } from '../../services/ProductService'
 import MyTableToolbar from './Components/MyTableToolbar'
@@ -19,6 +19,8 @@ import { useHistory } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import LoadingLinearProgress from '../../components/LoadingComponents/LoadingLinearProgress'
 import productStub from '../../stubs/ProductStub'
+import useWindowScrollPosition from '../../hooks/useWindowScrollPosition'
+import useLocalStorage from '../../hooks/useLocalStorage'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme: Theme) =>
@@ -63,6 +65,8 @@ const DataTable: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar()
   const myRef = useRef(document.createElement('table'))
   const [loading, setLoading] = useState(true)
+  const [scrollYStorage, setScrollYStorage] = useLocalStorage('table', 0)
+  const [a, setA] = useState(myRef.current.scrollTop)
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage)
 
@@ -81,14 +85,10 @@ const DataTable: React.FC = () => {
     setSelected([])
   }
 
-  const handleGoToProductClick = async (event: React.MouseEvent<unknown>, id: number) => {
-    try {
-      // await productService.getProduct(id)
-      productService.getProductMock(id)
-      history.push('/productDetail/' + id)
-    } catch (error) {
-      enqueueSnackbar('Error al obtener el producto, vuelva a intentarlo', { variant: 'error' })
-    }
+  const handleGoToProductClick = (id: number) => {
+    console.log(myRef.current.scrollTop)
+    setScrollYStorage(myRef.current.scrollTop)
+    history.push('/productDetail/' + id)
   }
 
   const handleClickCheckBox = (event: React.MouseEvent<unknown>, sku: number) => {
@@ -107,7 +107,6 @@ const DataTable: React.FC = () => {
   }
 
   const handleChangePage = (event: unknown, newPage: number) => {
-    console.log(myRef)
     setPage(newPage)
     myRef.current.scrollTop = 0
   }
@@ -123,6 +122,11 @@ const DataTable: React.FC = () => {
 
   const isSelected = (sku: number) => selected.indexOf(sku) !== -1
 
+  // look at this; easy as pie:
+  useWindowScrollPosition('MyAwesomeComponent_ScrollY', !loading)
+
+  // done :)
+
   useEffect(() => {
     const getProducts = async () => {
       try {
@@ -136,10 +140,18 @@ const DataTable: React.FC = () => {
       setLoading(false)
     }
     getProducts()
+    return () => {
+      console.log(a)
+    }
   }, [])
+
+  useEffect(() => {
+    myRef.current.scrollTop = scrollYStorage
+  }, [loading])
 
   return (
     <MyBox>
+      {a}
       <Paper className={classes.paper}>
         <MyTableToolbar numSelected={selected.length} />
         <LoadingLinearProgress />
@@ -166,7 +178,7 @@ const DataTable: React.FC = () => {
               page={page}
               rowsPerPage={rowsPerPage}
               isSelected={isSelected}
-              handleClick={handleGoToProductClick}
+              handleGoToProductClick={handleGoToProductClick}
               handleClickCheckBox={handleClickCheckBox}
               emptyRows={emptyRows}
               dense={dense}
