@@ -127,8 +127,8 @@ const DataTable: React.FC = () => {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        // setRows([...(await trackPromise(productService.getProducts()))])
-        setRows([...productStub.products])
+         setRows([...(await (productService.getProducts()))])
+       // setRows([...productStub.products])
         setLoading(false)
       } catch (error) {
         console.log(error)

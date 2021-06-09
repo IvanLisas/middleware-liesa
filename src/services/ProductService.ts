@@ -1,15 +1,23 @@
 import axios from 'axios'
 import { SERVER_URL } from '../config/Rest'
+import { PageNumber } from '../config/Rest'
+import { PageSize } from '../config/Rest'
 import { Product } from '../types/Product'
 import productStub from '../stubs/ProductStub'
 
 class ProductService {
+  
   getProductsMock(): Product[] {
     return productStub.products
   }
 
   async getProducts(): Promise<Product[]> {
-    const productsJSON = await axios.get(`${SERVER_URL}/product`)
+    const productsJSON = await axios.get(`${SERVER_URL}/product`,{
+      params: {
+        PageNumber:`${PageNumber}` ,
+        PageSize:`${PageSize}` ,
+      }
+    })
     console.log(productsJSON.data as Product[])
     return productsJSON.data as Product[]
   }
