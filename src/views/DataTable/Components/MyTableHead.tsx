@@ -56,7 +56,7 @@ const headCellsProps: HeadProps[] = [
   { label: 'SKU' },
   { label: 'Nombre' },
   { label: 'Marca' },
-  { label: 'Stock' },
+  /*   { label: 'Stock' }, */
   { label: 'Progreso' },
   { label: 'Estado' },
   { label: 'Tiendas  ' },

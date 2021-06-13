@@ -2,6 +2,7 @@ import React, { createContext, useState } from 'react'
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import useLocalStorage from '../hooks/useLocalStorage'
+import { esES } from '@material-ui/core/locale'
 
 interface ThemeContextDispatchProps {
   readonly isDark: boolean
@@ -24,35 +25,38 @@ const ThemeContextProvider: React.FC = ({ children }) => {
 
   const secondaryColor = () => '#b565a2' //Rosa
 
-  const theme = createMuiTheme({
-    palette: {
-      primary: {
-        main: primaryColor()
+  const theme = createMuiTheme(
+    {
+      palette: {
+        primary: {
+          main: primaryColor()
+        },
+        secondary: {
+          main: secondaryColor()
+        }
       },
-      secondary: {
-        main: secondaryColor()
-      }
-    },
-    overrides: {
-      MuiCssBaseline: {
-        '@global': {
-          '*::-webkit-scrollbar': {
-            width: 10,
-            height: 10
-          },
-          '*::-webkit-scrollbar-thumb': {
-            backgroundColor: primaryColor(),
-            outline: '1px solid slategrey',
-            borderRadius: 5
-          },
-          '*::-webkit-scrollbar-track': {
-            boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
-            webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
+      overrides: {
+        MuiCssBaseline: {
+          '@global': {
+            '*::-webkit-scrollbar': {
+              width: 10,
+              height: 10
+            },
+            '*::-webkit-scrollbar-thumb': {
+              backgroundColor: primaryColor(),
+              outline: '1px solid slategrey',
+              borderRadius: 5
+            },
+            '*::-webkit-scrollbar-track': {
+              boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+              webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
+            }
           }
         }
       }
-    }
-  })
+    },
+    esES
+  )
 
   const themeLight = createMuiTheme({
     ...theme,

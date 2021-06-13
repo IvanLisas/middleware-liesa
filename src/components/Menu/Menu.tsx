@@ -6,7 +6,9 @@ import { UserContext } from '../../contexts/UserContext'
 import MyAppBar from './components/MyAppBar'
 import MyDrawer from './components/MyDrawer/MyDrawer'
 
-const useStyles = makeStyles(() => ({
+const appBarHeight = 65
+
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -14,9 +16,20 @@ const useStyles = makeStyles(() => ({
     boxSizing: 'border-box',
     height: '100%'
   },
-  content: {
+  drawerAndContentContainer: {
     display: 'flex',
     height: '100%'
+  },
+  content: {
+    display: ' flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    backgroundColor: theme.palette.background.default,
+    marginLeft: 260,
+    marginTop: appBarHeight,
+    padding: 12,
+    flexFlow: 'row wrap'
   }
 }))
 
@@ -33,9 +46,9 @@ const Menu: React.FC = ({ children }) => {
     <div className={classes.root}>
       <CssBaseline />
       <MyAppBar height={appBarHeight} />
-      <div className={classes.content}>
+      <div className={classes.drawerAndContentContainer}>
         <MyDrawer marginTop={appBarHeight} />
-        {children}
+        <div className={classes.content}>{children}</div>
       </div>
     </div>
   )

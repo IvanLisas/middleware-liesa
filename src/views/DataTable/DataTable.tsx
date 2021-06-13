@@ -60,15 +60,13 @@ const DataTable: React.FC = () => {
   const [page, setPage] = useState(0)
   const [dense, setDense] = useState(true)
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0])
-  const [rows, setRows] = useState<Product[]>([])
+  const [products, setProducts] = useState<Product[]>([])
   const history = useHistory()
   const { enqueueSnackbar } = useSnackbar()
   const myRef = useRef(document.createElement('table'))
   const [loading, setLoading] = useState(true)
-  const [scrollYStorage, setScrollYStorage] = useLocalStorage('table', 0)
-  const [a, setA] = useState(myRef.current.scrollTop)
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage)
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, products.length - page * rowsPerPage)
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Product) => {
     const isAsc = orderBy === property && order === 'asc'
@@ -78,7 +76,7 @@ const DataTable: React.FC = () => {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.sku)
+      const newSelecteds = products.map((n) => n.sku)
       setSelected(newSelecteds)
       return
     }
@@ -86,8 +84,6 @@ const DataTable: React.FC = () => {
   }
 
   const handleGoToProductClick = (id: number) => {
-    /*     console.log(myRef.current.scrollTop)
-    setScrollYStorage(myRef.current.scrollTop) */
     history.push('/productDetail/' + id)
   }
 
@@ -122,13 +118,11 @@ const DataTable: React.FC = () => {
 
   const isSelected = (sku: number) => selected.indexOf(sku) !== -1
 
-  /*   useWindowScrollPosition('MyAwesomeComponent_ScrollY', !loading) */
-
   useEffect(() => {
     const getProducts = async () => {
       try {
-         setRows([...(await (productService.getProducts()))])
-       // setRows([...productStub.products])
+        //setProducts([...(await (await productService.getProducts(page + 1, rowsPerPage)).reverse())])
+        setProducts([...productService.getProductsMock(page, rowsPerPage)])
         setLoading(false)
       } catch (error) {
         console.log(error)
@@ -137,14 +131,14 @@ const DataTable: React.FC = () => {
       setLoading(false)
     }
     getProducts()
-    return () => {
+    /*     return () => {
       console.log(a)
-    }
-  }, [])
+    } */
+  }, [page, rowsPerPage])
 
-  useEffect(() => {
+  /*      useEffect(() => {
     myRef.current.scrollTop = scrollYStorage
-  }, [loading])
+  }, [loading])  */
 
   return (
     <MyBox>
@@ -164,11 +158,11 @@ const DataTable: React.FC = () => {
               order={order}
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
-              rowCount={rows.length}
+              rowCount={products.length}
             />
 
             <MyTableBody
-              rows={rows}
+              rows={products}
               order={order}
               orderBy={orderBy}
               page={page}
@@ -190,7 +184,7 @@ const DataTable: React.FC = () => {
           <TablePagination
             rowsPerPageOptions={rowsPerPageOptions}
             component="div"
-            count={rows.length}
+            count={productStub.products.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onChangePage={handleChangePage}

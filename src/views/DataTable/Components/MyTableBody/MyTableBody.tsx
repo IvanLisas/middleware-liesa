@@ -104,17 +104,20 @@ const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
     loading
   } = props
 
-  const isTheLastPage = page > rows.length / rowsPerPage
+  /*   const isTheLastPage = page > rows.length / rowsPerPage
 
   const calculeteTailOfPage = () => {
     if (isTheLastPage) return rows.length - page * rowsPerPage
     else return page * rowsPerPage + rowsPerPage
   }
-
+ */
   return (
     <TableBody>
       {/*   <LoadingCircularProgress></LoadingCircularProgress> */}
-      {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+      {rows.map((row, index) => {
+        {
+          /*   {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => { */
+        }
         const isItemSelected = isSelected(row.sku)
         const labelId = `enhanced-table-checkbox-${index}`
         return (
@@ -150,18 +153,18 @@ const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
             <TableCell className={classes.tableCell} align="left">
               {row.brand.name}
             </TableCell>
-            <TableCell className={classes.tableCell} align="right">
+            {/*             <TableCell className={classes.tableCell} align="right">
               {row.stock}
-            </TableCell>
+            </TableCell> */}
             <TableCell className={classes.tableCellProgressLinear} align="right">
               <MyLinearProgress value={row.filledDataProgress} />
             </TableCell>
             <TableCell align="left">
               <MyChip progress={row.filledDataProgress} />
             </TableCell>
-            <TableCell align="left">
+            {/*             <TableCell align="left">
               <Markets markets={row.activeMarketPlaces} />
-            </TableCell>
+            </TableCell> */}
             <TableCell align="left">
               <IconButton onClick={() => handleClick(row.id)}>
                 <Icon color="primary">edit_note</Icon>

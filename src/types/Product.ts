@@ -1,27 +1,52 @@
+import { BodyVolumen } from './BodyVoumen'
 import { Brand } from './Brand'
 import { Category } from './Category'
 import { MarketPlace } from './MarketPlace'
 
 export type Product = {
-  id: number
-  sku: number
   name: string
+  sku: number
+  productCode: string
+  alfaCode: string
+  brandID: number
+  categoryID: number
   brand: Brand
+  category: Category
+  /*   bodyVolumen: BodyVolumen */
+  id: number
   filledDataProgress: number
   activeMarketPlaces: MarketPlace[]
   CategoryPath: Category[]
-  stock: number
 }
 
 export default function createProduct(
-  id: number,
-  sku: number,
   name: string,
+  sku: number,
+  productCode: string,
+  alfaCode: string,
+  brandID: number,
+  categoryID: number,
   brand: Brand,
+  category: Category,
+  /*   bodyVolumen: BodyVolumen, */
+  id: number,
   filledDataProgress: number,
   activeMarketPlaces: MarketPlace[],
-  CategoryPath: Category[],
-  stock: number
+  CategoryPath: Category[]
 ): Product {
-  return { id, sku, name, brand, filledDataProgress, activeMarketPlaces, CategoryPath, stock }
+  return {
+    name,
+    sku,
+    productCode,
+    alfaCode,
+    brandID,
+    categoryID,
+    brand,
+    category,
+    /*     bodyVolumen, */
+    id,
+    filledDataProgress,
+    activeMarketPlaces,
+    CategoryPath
+  }
 }
