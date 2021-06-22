@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: '5px'
     },
     tableCell: {
-      fontSize: '1rem'
+      fontSize: '15px'
     },
     tableCellProgressLinear: {
       width: 150
@@ -85,6 +85,7 @@ interface MyTableBodyProps {
   emptyRows: number
   dense: boolean
   loading: boolean
+  handleOpenDialog: (id: number) => void
 }
 
 const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
@@ -101,7 +102,8 @@ const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
     handleClickCheckBox,
     emptyRows,
     dense,
-    loading
+    loading,
+    handleOpenDialog
   } = props
 
   /*   const isTheLastPage = page > rows.length / rowsPerPage
@@ -144,30 +146,36 @@ const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
                 }}
               />
             </TableCell>
-            <TableCell className={classes.tableCell} align="right" id={labelId}>
-              {row.sku}
-            </TableCell>
+
             <TableCell className={classes.tableCell} size="medium" align="left">
               {row.name}
             </TableCell>
+            <TableCell className={classes.tableCell} align="left" id={labelId}>
+              {row.sku}
+            </TableCell>
             <TableCell className={classes.tableCell} align="left">
-              {row.brand.name}
+              {row.productCode}
             </TableCell>
             {/*             <TableCell className={classes.tableCell} align="right">
               {row.stock}
             </TableCell> */}
-            <TableCell className={classes.tableCellProgressLinear} align="right">
-              <MyLinearProgress value={row.filledDataProgress} />
+            <TableCell className={classes.tableCell} align="left">
+              {row.brand.name}
             </TableCell>
-            <TableCell align="left">
-              <MyChip progress={row.filledDataProgress} />
+            <TableCell className={classes.tableCell} align="left">
+              {row.alfaCode}
             </TableCell>
             {/*             <TableCell align="left">
               <Markets markets={row.activeMarketPlaces} />
             </TableCell> */}
             <TableCell align="left">
+              <IconButton onClick={() => handleOpenDialog(row.id)}>
+                <Icon color="primary">straighten</Icon>
+              </IconButton>
+            </TableCell>
+            <TableCell align="left">
               <IconButton onClick={() => handleClick(row.id)}>
-                <Icon color="primary">edit_note</Icon>
+                <Icon color="secondary">chevron_right</Icon>
               </IconButton>
             </TableCell>
           </TableRow>

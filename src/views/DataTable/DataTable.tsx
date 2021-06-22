@@ -21,25 +21,29 @@ import LoadingLinearProgress from '../../components/LoadingComponents/LoadingLin
 import productStub from '../../stubs/ProductStub'
 import useWindowScrollPosition from '../../hooks/useWindowScrollPosition'
 import useLocalStorage from '../../hooks/useLocalStorage'
+import Root from '../../components/Root/Root'
+import { path } from '../../types/path'
+import MyDialog from '../../components/MyStyledComponents/MyDialog'
+import VolumenCard from '../../components/VolumenCard'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      width: '100%'
+      /*    width: '100%' */
     },
     paper: {
-      width: '100%',
-      minWidth: 1100,
-      boxShadow: 'none',
-      flexWrap: 'wrap',
+      /*    width: '100%', */
+      /*  minWidth: 1100, */
+      boxShadow: 'none'
+      /*      flexWrap: 'wrap',
       display: 'flex',
-      flexDirection: 'column',
-      height: '100%',
-      justifyContent: 'space-between'
+      flexDirection: 'column' */
+      /*  height: '100%', */
+      /*  justifyContent: 'space-between' */
     },
     tableContainer: {
-      height: 'calc(100vh - 280px)' //TODO: Estos 237px tendrian que depender de componentes
+      height: 'calc(100vh - 210px)' //TODO: Estos 237px tendrian que depender de componentes
     },
     bottomContainer: {
       display: 'flex',
@@ -65,6 +69,7 @@ const DataTable: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar()
   const myRef = useRef(document.createElement('table'))
   const [loading, setLoading] = useState(true)
+  const [openDialog, setOpenDialog] = useState(false)
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, products.length - page * rowsPerPage)
 
@@ -140,59 +145,71 @@ const DataTable: React.FC = () => {
     myRef.current.scrollTop = scrollYStorage
   }, [loading])  */
 
-  return (
-    <MyBox>
-      <Paper className={classes.paper}>
-        <MyTableToolbar numSelected={selected.length} />
-        <LoadingLinearProgress />
-        <TableContainer ref={myRef} className={clsx(classes.tableContainer, classesGlobal.scrollbarStyles)}>
-          <Table
-            ref={myRef}
-            stickyHeader
-            aria-label="sticky table"
-            aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
-          >
-            <MyTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              rowCount={products.length}
-            />
+  const paths = [{ name: 'Catalogo', icon: 'home', url: '/' } as path]
 
-            <MyTableBody
-              rows={products}
-              order={order}
-              orderBy={orderBy}
-              page={page}
-              rowsPerPage={rowsPerPage}
-              isSelected={isSelected}
-              handleGoToProductClick={handleGoToProductClick}
-              handleClickCheckBox={handleClickCheckBox}
-              emptyRows={emptyRows}
-              dense={dense}
-              loading={loading}
+  const handleOpenDialog = (id: number) => {
+    setOpenDialog(true)
+  }
+
+  return (
+    <Root paths={paths} tittle="Catalogo">
+      <MyBox>
+        <Paper className={classes.paper}>
+          {/*     <MyTableToolbar numSelected={selected.length} /> */}
+          <LoadingLinearProgress />
+          <TableContainer ref={myRef} className={clsx(classes.tableContainer, classesGlobal.scrollbarStyles)}>
+            <Table
+              ref={myRef}
+              stickyHeader
+              aria-label="sticky table"
+              aria-labelledby="tableTitle"
+              size={dense ? 'small' : 'medium'}
+            >
+              <MyTableHead
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={handleSelectAllClick}
+                rowCount={products.length}
+              />
+
+              <MyTableBody
+                rows={products}
+                order={order}
+                orderBy={orderBy}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                isSelected={isSelected}
+                handleGoToProductClick={handleGoToProductClick}
+                handleClickCheckBox={handleClickCheckBox}
+                emptyRows={emptyRows}
+                dense={dense}
+                loading={loading}
+                handleOpenDialog={handleOpenDialog}
+              />
+            </Table>
+          </TableContainer>
+          <div className={classes.bottomContainer}>
+            <FormControlLabel
+              control={<Switch color="primary" checked={dense} onChange={handleChangeDense} />}
+              label="Margen denso"
             />
-          </Table>
-        </TableContainer>
-        <div className={classes.bottomContainer}>
-          <FormControlLabel
-            control={<Switch color="primary" checked={dense} onChange={handleChangeDense} />}
-            label="Margen denso"
-          />
-          <TablePagination
-            rowsPerPageOptions={rowsPerPageOptions}
-            component="div"
-            count={productStub.products.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-          />
-        </div>
-      </Paper>
-    </MyBox>
+            <TablePagination
+              rowsPerPageOptions={rowsPerPageOptions}
+              component="div"
+              count={productStub.products.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onChangePage={handleChangePage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
+            />
+          </div>
+        </Paper>
+        <MyDialog open={openDialog} setOpen={setOpenDialog}>
+          <VolumenCard setOpen={setOpenDialog} />
+        </MyDialog>
+      </MyBox>
+    </Root>
   )
 }
 

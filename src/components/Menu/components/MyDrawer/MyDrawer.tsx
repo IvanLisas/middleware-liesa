@@ -24,13 +24,10 @@ interface StyleProps {
 const appBarwidth = 260
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column'
-  },
   drawer: {
     /* marginTop: (props: StyleProps) => props.marginTop, */
-    paddingTop: 65,
+    paddingTop: 50,
+    zIndex: 2,
     width: appBarwidth,
     flexShrink: 0,
     whiteSpace: 'nowrap',
@@ -45,8 +42,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'fixed',
     top: 0,
     left: 0,
-    right: 0,
-    zIndex: 0
+    right: 0
   },
   drawerTop: {
     paddingTop: 0
@@ -114,8 +110,8 @@ const MyDrawer: React.FC<MyDrawerProps> = ({ marginTop }) => {
       onMouseLeave={() => setOpen(false)} */
       className={clsx(classes.drawer, classesGlobal.scrollbarStyles, {
         [classes.drawerOpen]: open,
-        [classes.drawerClose]: !open,
-        [classes.drawerTop]: scrollDirection === 'Down' && 'hidden'
+        [classes.drawerClose]: !open
+        /*  [classes.drawerTop]: scrollDirection === 'Down' && 'hidden' */
       })}
     >
       <List className={classes.itemList}>

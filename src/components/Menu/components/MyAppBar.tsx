@@ -35,9 +35,9 @@ const useStyles = makeStyles((theme) => ({
     top: 0,
     left: 0,
     right: 0,
-    height: '64px',
+    height: '50px',
     transition: 'top 0.2s ease 0s',
-    zIndex: 1,
+    zIndex: 3,
     padding: '0px 16px'
   },
   navbarHidden: {
@@ -113,12 +113,15 @@ const MyAppBar: React.FC<MyAppBarProps> = ({ height }) => {
 
   if (!user) return null
 
+  //Para ocultarla
+  /*   <nav
+  className={clsx(classes.navbar, {
+    [classes.navbarHidden]: scrollDirection === 'Down' && 'hidden'
+  })}
+> */
+
   return (
-    <nav
-      className={clsx(classes.navbar, {
-        [classes.navbarHidden]: scrollDirection === 'Down' && 'hidden'
-      })}
-    >
+    <nav className={clsx(classes.navbar)}>
       <div className={classes.navbarLeft}>
         {/* <IconButton onClick={handleDrawer} edge="start" className={clsx(classes.icon)}>
               <Icon className={classes.icon}>menu_open</Icon>

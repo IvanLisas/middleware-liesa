@@ -6,7 +6,7 @@ import { UserContext } from '../../contexts/UserContext'
 import MyAppBar from './components/MyAppBar'
 import MyDrawer from './components/MyDrawer/MyDrawer'
 
-const appBarHeight = 65
+const appBarHeight = 50
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     backgroundColor: theme.palette.background.default,
     marginLeft: 260,
-    marginTop: appBarHeight,
+    /*     marginTop: appBarHeight, */
     padding: 12,
     flexFlow: 'row wrap'
   }
@@ -48,7 +48,7 @@ const Menu: React.FC = ({ children }) => {
       <MyAppBar height={appBarHeight} />
       <div className={classes.drawerAndContentContainer}>
         <MyDrawer marginTop={appBarHeight} />
-        <div className={classes.content}>{children}</div>
+        {children}
       </div>
     </div>
   )

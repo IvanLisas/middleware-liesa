@@ -87,9 +87,9 @@ const MyTableToolbar: React.FC<MyTableToolbarProps> = (props) => {
 
   return (
     <Toolbar>
-      <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+      {/*       <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
         Productos
-      </Typography>
+      </Typography> */}
       {/*       <Button variant="outlined" color="primary" onClick={() => handleClickOpen()}>
         Filtros
       </Button> */}

@@ -8,28 +8,18 @@ import Checkbox from '@material-ui/core/Checkbox'
 import { Order } from '../../../types/Order'
 import clsx from 'clsx'
 import Button from '@material-ui/core/Button'
-import { Input } from '@material-ui/core'
+import { Input, InputBase, withStyles } from '@material-ui/core'
+import TextField from '@material-ui/core/TextField'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    visuallyHidden: {
-      border: 0,
-      clip: 'rect(0 0 0 0)',
-      height: 1,
-      margin: -1,
-      overflow: 'hidden',
-      padding: 0,
-      position: 'absolute',
-      top: 20,
-      width: 1
-    },
     tableHead: {
       backgroundColor: theme.palette.type == 'dark' ? theme.palette.background.paper : theme.palette.background.default,
       filter: theme.palette.type == 'dark' ? 'brightness(70%)' : 'brightness(95%)',
       // backgroundColor: theme.palette.primary.main,
       // color: 'white'
       borderSpacing: '2px',
-      fontWeight: 600,
+
       fontSize: '1rem'
     },
     tableHeadLeft: {
@@ -50,17 +40,22 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface HeadProps {
   label: string
+  type: 'string' | 'number' | 'undefined'
 }
 
 const headCellsProps: HeadProps[] = [
-  { label: 'SKU' },
-  { label: 'Nombre' },
-  { label: 'Marca' },
+  { label: 'Nombre', type: 'string' },
+  { label: 'SKU', type: 'number' },
+  { label: 'Cod de producto', type: 'number' },
+  { label: 'Marca', type: 'string' },
+  { label: 'Cod alfanumérico', type: 'number' },
+
   /*   { label: 'Stock' }, */
-  { label: 'Progreso' },
-  { label: 'Estado' },
-  { label: 'Tiendas  ' },
-  { label: '' }
+  /*   { label: 'Progreso' },
+  { label: 'Estado' }, */
+  /*   { label: 'Tiendas  ' }, */
+  { label: ' ', type: 'undefined' },
+  { label: ' ', type: 'undefined' }
 ]
 
 interface MyTableHeadProps {
@@ -81,17 +76,59 @@ const MyTableHead: React.FC<MyTableHeadProps> = (props) => {
   } */
 
   //TODO REDONDEAR FINAL
-  const headCell = (placeholder: string) => (
-    <TableCell key={placeholder} className={classes.tableHead}>
-      {/*       <div className="action-column">
-        <Input placeholder={placeholder} />
-        <Button>
-          <span className="material-icons">arrow_up</span>
-        </Button> 
-      </div> */}
-      {placeholder}
+  const headCell = (head: HeadProps) => (
+    <TableCell key={head.label} className={classes.tableHead}>
+      {head.label !== ' ' && (
+        <div className="action-column">
+          {/*           <Button>
+            <span className="material-icons">arrow_up</span>
+          </Button> */}
+          {/* <TextField style={{ padding: 0 }} id="outlined-basic" label={placeholder} variant="filled" /> */}
+          <BootstrapInput style={{ textAlign: 'end' }} placeholder={head.label}></BootstrapInput>
+        </div>
+      )}
+      {/* {placeholder} */}
     </TableCell>
   )
+
+  const BootstrapInput = withStyles((theme: Theme) =>
+    createStyles({
+      root: {
+        'label + &': {}
+      },
+      input: {
+        borderRadius: 4,
+        position: 'relative',
+        backgroundColor: theme.palette.background.paper,
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        fontSize: 14,
+        padding: 8,
+        fontWeight: 600,
+        border: '1px solid #ced4da',
+        transition: theme.transitions.create(['border-color', 'box-shadow']),
+        // Use the system font instead of the default Roboto font.
+        fontFamily: [
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+          '"Helvetica Neue"',
+          'Arial',
+          'sans-serif',
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"',
+          '"Segoe UI Symbol"'
+        ].join(','),
+        '&:focus': {
+          borderRadius: 4,
+          borderColor: theme.palette.primary.main,
+          boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)'
+        }
+      }
+    })
+  )(InputBase)
 
   return (
     <TableHead>
@@ -107,7 +144,7 @@ const MyTableHead: React.FC<MyTableHeadProps> = (props) => {
             }}
           />
         </TableCell>
-        {headCellsProps.map((headCellData, index) => headCell(headCellData.label))}
+        {headCellsProps.map((headCellData, index) => headCell(headCellData))}
       </TableRow>
     </TableHead>
   )
