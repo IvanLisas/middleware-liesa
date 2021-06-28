@@ -1,30 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import Table from '@material-ui/core/Table'
-import TableContainer from '@material-ui/core/TableContainer'
-import TablePagination from '@material-ui/core/TablePagination'
-import Paper from '@material-ui/core/Paper'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Switch from '@material-ui/core/Switch'
-import MyBox from '../../components/MyStyledComponents/MyBox'
-import MyTableBody from './Components/MyTableBody/MyTableBody'
 import useGlobalStyle from '../../styles/globalStyles'
 import { productService } from '../../services/ProductService'
-import MyTableToolbar from './Components/MyTableToolbar'
-import clsx from 'clsx'
 import { Order } from '../../types/Order'
-import MyTableHead from './Components/MyTableHead'
 import { Product } from '../../types/Product'
 import { useHistory } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
-import LoadingLinearProgress from '../../components/LoadingComponents/LoadingLinearProgress'
 import productStub from '../../stubs/ProductStub'
-import useWindowScrollPosition from '../../hooks/useWindowScrollPosition'
-import useLocalStorage from '../../hooks/useLocalStorage'
-import Root from '../../components/Root/Root'
 import { path } from '../../types/path'
+import { Paper, TableContainer, Table, FormControlLabel, TablePagination, Switch } from '@material-ui/core'
+import LoadingLinearProgress from '../../components/LoadingComponents/LoadingLinearProgress'
+import MyBox from '../../components/MyStyledComponents/MyBox'
 import MyDialog from '../../components/MyStyledComponents/MyDialog'
+import Root from '../../components/Root/Root'
 import VolumenCard from '../../components/VolumenCard'
+import MyTableBody from './Components/MyTableBody/MyTableBody'
+import MyTableHead from './Components/MyTableHead'
+import clsx from 'clsx'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme: Theme) =>
@@ -55,38 +47,35 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const DataTable: React.FC = () => {
-  const rowsPerPageOptions = [10, 25, 50, 100]
+  //Styles
   const classes = useStyles()
   const classesGlobal = useGlobalStyle()
+  //Table state
+  const rowsPerPageOptions = [10, 25, 50, 100]
   const [order, setOrder] = useState<Order>('asc')
   const [orderBy, setOrderBy] = useState<keyof Product>('sku')
   const [selected, setSelected] = useState<number[]>([])
   const [page, setPage] = useState(0)
   const [dense, setDense] = useState(true)
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0])
+  const [numberOfProducts, setNumberOfProducts] = useState(0)
+  //Others
   const [products, setProducts] = useState<Product[]>([])
-  const history = useHistory()
-  const { enqueueSnackbar } = useSnackbar()
-  const myRef = useRef(document.createElement('table'))
   const [loading, setLoading] = useState(true)
   const [openDialog, setOpenDialog] = useState(false)
+  const { enqueueSnackbar } = useSnackbar()
+  const history = useHistory()
+  const myRef = useRef(document.createElement('table'))
+
+  const paths = [{ name: 'Catalogo', icon: 'home', url: '/' } as path]
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, products.length - page * rowsPerPage)
 
-  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Product) => {
+  /*   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Product) => {
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
     setOrderBy(property)
-  }
-
-  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      const newSelecteds = products.map((n) => n.sku)
-      setSelected(newSelecteds)
-      return
-    }
-    setSelected([])
-  }
+  } */
 
   const handleGoToProductClick = (id: number) => {
     history.push('/productDetail/' + id)
@@ -107,6 +96,15 @@ const DataTable: React.FC = () => {
     setSelected(newSelected)
   }
 
+  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      const newSelecteds = products.map((n) => n.sku)
+      setSelected(newSelecteds)
+      return
+    }
+    setSelected([])
+  }
+
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
     myRef.current.scrollTop = 0
@@ -123,33 +121,30 @@ const DataTable: React.FC = () => {
 
   const isSelected = (sku: number) => selected.indexOf(sku) !== -1
 
+  const handleOpenDialog = (id: number) => {
+    setOpenDialog(true)
+  }
+
   useEffect(() => {
     const getProducts = async () => {
       try {
-        //setProducts([...(await (await productService.getProducts(page + 1, rowsPerPage)).reverse())])
-        setProducts([...productService.getProductsMock(page, rowsPerPage)])
+        const productsData = await productService.getProducts(page + 1, rowsPerPage)
+        setNumberOfProducts(productsData.totalItem)
+        setProducts([...productsData.data])
+        // setProducts([...productService.getProductsMock(page, rowsPerPage)])
         setLoading(false)
       } catch (error) {
         console.log(error)
-        enqueueSnackbar('Error al conectar con el servidor: ' + error.message, { variant: 'error' })
+        enqueueSnackbar('No se pudieron obtener los productos ' + error.message, { variant: 'error' })
       }
       setLoading(false)
     }
     getProducts()
-    /*     return () => {
-      console.log(a)
-    } */
   }, [page, rowsPerPage])
 
   /*      useEffect(() => {
     myRef.current.scrollTop = scrollYStorage
   }, [loading])  */
-
-  const paths = [{ name: 'Catalogo', icon: 'home', url: '/' } as path]
-
-  const handleOpenDialog = (id: number) => {
-    setOpenDialog(true)
-  }
 
   return (
     <Root paths={paths} tittle="Catalogo">
@@ -197,7 +192,7 @@ const DataTable: React.FC = () => {
             <TablePagination
               rowsPerPageOptions={rowsPerPageOptions}
               component="div"
-              count={productStub.products.length}
+              count={numberOfProducts}
               rowsPerPage={rowsPerPage}
               page={page}
               onChangePage={handleChangePage}
