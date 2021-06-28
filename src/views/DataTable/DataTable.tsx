@@ -197,6 +197,16 @@ const DataTable: React.FC = () => {
               page={page}
               onChangePage={handleChangePage}
               onChangeRowsPerPage={handleChangeRowsPerPage}
+              labelDisplayedRows={(data) => (
+                <a style={{ display: 'flex', gap: 36 }}>
+                  <a>
+                    Pagina: {data.page + 1} de {Math.ceil(data.count / rowsPerPage)}
+                  </a>
+                  <a>
+                    {data.from}-{data.to} de {data.count}
+                  </a>
+                </a>
+              )}
             />
           </div>
         </Paper>
