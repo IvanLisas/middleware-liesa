@@ -40,12 +40,18 @@ const MyBreadcrumbs: React.FC<MyBreadcrumbsProps> = ({ paths }) => {
     <Breadcrumbs separator="›" aria-label="breadcrumb">
       {paths?.map((path, index) =>
         index != paths.length - 1 ? (
-          <Link color={'inherit'} href={path.url} onClick={() => handleChangeRoute(path.url)} className={classes.link}>
+          <Link
+            key={'link' + index}
+            color={'inherit'}
+            href={path.url}
+            onClick={() => handleChangeRoute(path.url)}
+            className={classes.link}
+          >
             <Icon className={classes.icon}>{path.icon}</Icon>
             {path.name}
           </Link>
         ) : (
-          <Typography color="textPrimary" className={classes.link}>
+          <Typography key={'typography' + index} color="textPrimary" className={classes.link}>
             <Icon className={classes.icon}>{path.icon}</Icon>
             {path.name}
           </Typography>

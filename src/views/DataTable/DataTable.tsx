@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import useGlobalStyle from '../../styles/globalStyles'
 import { productService } from '../../services/ProductService'
@@ -6,10 +6,8 @@ import { Order } from '../../types/Order'
 import { Product } from '../../types/Product'
 import { useHistory } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
-import productStub from '../../stubs/ProductStub'
 import { path } from '../../types/path'
 import { Paper, TableContainer, Table, FormControlLabel, TablePagination, Switch } from '@material-ui/core'
-import LoadingLinearProgress from '../../components/LoadingComponents/LoadingLinearProgress'
 import MyBox from '../../components/MyStyledComponents/MyBox'
 import MyDialog from '../../components/MyStyledComponents/MyDialog'
 import Root from '../../components/Root/Root'
@@ -19,6 +17,7 @@ import MyTableHead from './Components/MyTableHead'
 import clsx from 'clsx'
 import { trackPromise, usePromiseTracker } from 'react-promise-tracker'
 import LinearProgress from '@material-ui/core/LinearProgress'
+import { FiltersContext } from '../../contexts/FiltersContext'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme: Theme) =>
@@ -46,13 +45,15 @@ const DataTable: React.FC = () => {
   const classes = useStyles()
   const classesGlobal = useGlobalStyle()
   //Table state
-  const rowsPerPageOptions = [10, 25, 50, 100]
+  const { page, setPage, rowsPerPage, setRowsPerPage, rowsPerPageOptions, scrollPosition, setScrollPosition } =
+    useContext(FiltersContext)
   const [order, setOrder] = useState<Order>('asc')
   const [orderBy, setOrderBy] = useState<keyof Product>('sku')
   const [selected, setSelected] = useState<number[]>([])
-  const [page, setPage] = useState(0)
   const [dense, setDense] = useState(true)
-  const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0])
+  /* const rowsPerPageOptions = [10, 25, 50, 100] */
+  /* const [page, setPage] = useState(0) */
+  /* const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]) */
   const [numberOfProducts, setNumberOfProducts] = useState(0)
   //Others
   const [products, setProducts] = useState<Product[]>([])
@@ -62,6 +63,7 @@ const DataTable: React.FC = () => {
   const history = useHistory()
   const myRef = useRef(document.createElement('table'))
   const { promiseInProgress } = usePromiseTracker()
+  //Route params
 
   const paths = [{ name: 'Catalogo', icon: 'home', url: '/' } as path]
 
@@ -69,6 +71,7 @@ const DataTable: React.FC = () => {
 
   const handleGoToProductClick = async (id: number) => {
     const product = await trackPromise(productService.getProduct(id))
+    setScrollPosition(myRef.current.scrollTop)
     history.push('/productDetail/' + id, product)
   }
 
@@ -122,6 +125,7 @@ const DataTable: React.FC = () => {
 
   useEffect(() => {
     const getProducts = async () => {
+      console.log(scrollPosition)
       try {
         const productsData = await trackPromise(productService.getProducts(page + 1, rowsPerPage))
         setNumberOfProducts(productsData.totalItem)
@@ -137,9 +141,9 @@ const DataTable: React.FC = () => {
     getProducts()
   }, [page, rowsPerPage])
 
-  /*      useEffect(() => {
-    myRef.current.scrollTop = scrollYStorage
-  }, [loading])  */
+  useEffect(() => {
+    myRef.current.scrollTop = scrollPosition
+  }, [loading])
 
   return (
     <Root paths={paths} tittle="Catalogo">
@@ -194,14 +198,14 @@ const DataTable: React.FC = () => {
               onChangePage={handleChangePage}
               onChangeRowsPerPage={handleChangeRowsPerPage}
               labelDisplayedRows={(data) => (
-                <a style={{ display: 'flex', gap: 36 }}>
-                  <a>
+                <div style={{ display: 'flex', gap: 36 }}>
+                  <div>
                     Pagina: {data.page + 1} de {Math.ceil(data.count / rowsPerPage)}
-                  </a>
-                  <a>
+                  </div>
+                  <div>
                     {data.from}-{data.to} de {data.count}
-                  </a>
-                </a>
+                  </div>
+                </div>
               )}
             />
           </div>
@@ -209,6 +213,7 @@ const DataTable: React.FC = () => {
         <MyDialog open={openDialog} setOpen={setOpenDialog}>
           <VolumenCard setOpen={setOpenDialog} />
         </MyDialog>
+        {/*   {(myRef.current.scrollTop = scrollPosition)} */}
       </MyBox>
     </Root>
   )

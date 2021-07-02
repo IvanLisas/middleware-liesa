@@ -76,8 +76,8 @@ const MyTableHead: React.FC<MyTableHeadProps> = (props) => {
   } */
 
   //TODO REDONDEAR FINAL
-  const headCell = (head: HeadProps) => (
-    <TableCell key={head.label} className={classes.tableHead}>
+  const headCell = (head: HeadProps, index: number) => (
+    <TableCell key={head.label + index} className={classes.tableHead}>
       {head.label !== ' ' && (
         <div className="action-column">
           {/*           <Button>
@@ -144,7 +144,7 @@ const MyTableHead: React.FC<MyTableHeadProps> = (props) => {
             }}
           />
         </TableCell>
-        {headCellsProps.map((headCellData, index) => headCell(headCellData))}
+        {headCellsProps.map((headCellData, index) => headCell(headCellData, index))}
       </TableRow>
     </TableHead>
   )

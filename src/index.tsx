@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals'
 import UserContextProvider from './contexts/UserContext'
 import ThemeContextProvider from './contexts/ThemeContext'
 import SnackBarProvider from './contexts/SnackBarContext'
+import FiltersContextProvider from './contexts/FiltersContext'
 
 ReactDOM.render(
   //TODO: Hacer un provider general
@@ -13,7 +14,9 @@ ReactDOM.render(
     <ThemeContextProvider>
       <SnackBarProvider>
         <UserContextProvider>
-          <App />
+          <FiltersContextProvider>
+            <App />
+          </FiltersContextProvider>
         </UserContextProvider>
       </SnackBarProvider>
     </ThemeContextProvider>

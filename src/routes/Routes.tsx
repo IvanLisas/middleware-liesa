@@ -17,6 +17,7 @@ const Routes: React.FC = () => {
           <Switch>
             <Route path="/mercadolibre/ruta1" component={CategoriesSelector} />
             <Route path="/productDetail/:id" component={ProductForm} />
+            <Route path="/catalogo" component={DataTable} />
             <Route path="/" component={DataTable} />
           </Switch>
         </Menu>

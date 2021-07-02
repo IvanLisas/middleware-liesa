@@ -2,12 +2,12 @@ export const itemList = [
   {
     label: 'Catalogo',
     logo: '/product-logo.png',
-    ruta: '/catalog',
+    ruta: '/catalogo',
     open: false,
     children: [
       {
         label: 'Listar productos',
-        ruta: '/show',
+        ruta: '',
         icon: 'list'
       },
       {

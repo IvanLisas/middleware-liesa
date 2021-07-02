@@ -44,7 +44,7 @@ const ProductForm: React.FC = (props: any) => {
 
   const { id } = useParams<{ id: string }>()
 
-  const goHome = () => {
+  const goBack = () => {
     history.goBack()
   }
 
@@ -58,7 +58,7 @@ const ProductForm: React.FC = (props: any) => {
           setProductDetail((await productService.getProduct(Number(id))).data)
         } catch (error) {
           enqueueSnackbar('Error al obtener el producto, vuelva a intentarlo', { variant: 'error' })
-          goHome()
+          goBack() //TODO hacer un 404 page
         }
     }
     getProduct()
@@ -93,10 +93,10 @@ const ProductForm: React.FC = (props: any) => {
       </form>
       <div style={{ padding: '16px 0px' }}>
         <div className={classesGlobal.endButtonContainer}>
-          <Button onClick={goHome} type="submit" variant="contained" color="primary">
+          <Button onClick={goBack} type="submit" variant="contained" color="primary">
             Guardar
           </Button>
-          <Button onClick={goHome} variant="contained" color="secondary">
+          <Button onClick={goBack} variant="contained" color="secondary">
             Cancelar
           </Button>
         </div>
