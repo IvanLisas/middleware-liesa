@@ -1,6 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-
+import clsx from 'clsx'
 const useStyles = makeStyles((theme) => ({
   box: {
     backgroundColor: theme.palette.background.paper,
@@ -13,10 +13,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const Box: React.FC = ({ children }) => {
+const Box: React.FC<React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>> = (props) => {
   const classes = useStyles()
 
-  return <div className={classes.box}>{children}</div>
+  const { className, children } = props
+
+  return <div className={clsx(className, classes.box)}>{children}</div>
 }
 
 export default Box

@@ -17,22 +17,17 @@ import VolumenCard from '../../components/VolumenCard'
 import MyTableBody from './Components/MyTableBody/MyTableBody'
 import MyTableHead from './Components/MyTableHead'
 import clsx from 'clsx'
+import { trackPromise, usePromiseTracker } from 'react-promise-tracker'
+import LinearProgress from '@material-ui/core/LinearProgress'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      /*    width: '100%' */
+      padding: 0
     },
     paper: {
-      /*    width: '100%', */
-      /*  minWidth: 1100, */
       boxShadow: 'none'
-      /*      flexWrap: 'wrap',
-      display: 'flex',
-      flexDirection: 'column' */
-      /*  height: '100%', */
-      /*  justifyContent: 'space-between' */
     },
     tableContainer: {
       height: 'calc(100vh - 210px)' //TODO: Estos 237px tendrian que depender de componentes
@@ -66,19 +61,15 @@ const DataTable: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar()
   const history = useHistory()
   const myRef = useRef(document.createElement('table'))
+  const { promiseInProgress } = usePromiseTracker()
 
   const paths = [{ name: 'Catalogo', icon: 'home', url: '/' } as path]
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, products.length - page * rowsPerPage)
 
-  /*   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Product) => {
-    const isAsc = orderBy === property && order === 'asc'
-    setOrder(isAsc ? 'desc' : 'asc')
-    setOrderBy(property)
-  } */
-
-  const handleGoToProductClick = (id: number) => {
-    history.push('/productDetail/' + id)
+  const handleGoToProductClick = async (id: number) => {
+    const product = await trackPromise(productService.getProduct(id))
+    history.push('/productDetail/' + id, product)
   }
 
   const handleClickCheckBox = (event: React.MouseEvent<unknown>, sku: number) => {
@@ -115,9 +106,7 @@ const DataTable: React.FC = () => {
     setPage(0)
   }
 
-  const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDense(event.target.checked)
-  }
+  const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => setDense(event.target.checked)
 
   const isSelected = (sku: number) => selected.indexOf(sku) !== -1
 
@@ -125,17 +114,23 @@ const DataTable: React.FC = () => {
     setOpenDialog(true)
   }
 
+  /*   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Product) => {
+    const isAsc = orderBy === property && order === 'asc'
+    setOrder(isAsc ? 'desc' : 'asc')
+    setOrderBy(property)
+  } */
+
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const productsData = await productService.getProducts(page + 1, rowsPerPage)
+        const productsData = await trackPromise(productService.getProducts(page + 1, rowsPerPage))
         setNumberOfProducts(productsData.totalItem)
         setProducts([...productsData.data])
         // setProducts([...productService.getProductsMock(page, rowsPerPage)])
         setLoading(false)
       } catch (error) {
         console.log(error)
-        enqueueSnackbar('No se pudieron obtener los productos ' + error.message, { variant: 'error' })
+        enqueueSnackbar('No se pudieron obtener los productos: ' + error.message, { variant: 'error' })
       }
       setLoading(false)
     }
@@ -148,10 +143,11 @@ const DataTable: React.FC = () => {
 
   return (
     <Root paths={paths} tittle="Catalogo">
-      <MyBox>
+      {promiseInProgress ? <LinearProgress /> : <div style={{ marginTop: 4 }}></div>}
+      <MyBox className={classes.root}>
         <Paper className={classes.paper}>
           {/*     <MyTableToolbar numSelected={selected.length} /> */}
-          <LoadingLinearProgress />
+
           <TableContainer ref={myRef} className={clsx(classes.tableContainer, classesGlobal.scrollbarStyles)}>
             <Table
               ref={myRef}

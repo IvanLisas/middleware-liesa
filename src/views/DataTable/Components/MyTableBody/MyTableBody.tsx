@@ -25,18 +25,14 @@ const useStyles = makeStyles((theme: Theme) =>
     tableCell: {
       fontSize: '15px'
     },
-    tableCellProgressLinear: {
-      width: 150
-    },
-
     tableRow: {
-      '&$selected': {
+      /*       '&$selected': {
         backgroundColor: theme.palette.primary.main,
         opacity: 0.16
-      }
+      } */
     },
     rowSelected: {
-      backgroundColor: fade(theme.palette.primary.main, 0.08) + '!important'
+      backgroundColor: fade(theme.palette.primary.main, 0.16) + '!important'
     },
     checkbox: {
       color: theme.palette.primary.main + '!important'

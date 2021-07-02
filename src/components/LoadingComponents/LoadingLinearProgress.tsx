@@ -12,9 +12,8 @@ const useStyles = makeStyles(() => ({
 
 const LoadingLinearProgress: React.FC = () => {
   const classes = useStyles()
-  const { promiseInProgress } = usePromiseTracker()
 
-  return <div className={classes.root}>{promiseInProgress && <LinearProgress />}</div>
+  return <div className={classes.root}>{<LinearProgress />}</div>
 }
 
 export default LoadingLinearProgress
