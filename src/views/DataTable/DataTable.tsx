@@ -127,10 +127,10 @@ const DataTable: React.FC = () => {
     const getProducts = async () => {
       console.log(scrollPosition)
       try {
-        const productsData = await trackPromise(productService.getProducts(page + 1, rowsPerPage))
-        setNumberOfProducts(productsData.totalItem)
-        setProducts([...productsData.data])
-        // setProducts([...productService.getProductsMock(page, rowsPerPage)])
+        // const productsData = await trackPromise(productService.getProducts(page + 1, rowsPerPage))
+        // setNumberOfProducts(productsData.totalItem)
+        //setProducts([...productsData.data])
+        setProducts([...productService.getProductsMock(page, rowsPerPage)])
         setLoading(false)
       } catch (error) {
         console.log(error)
