@@ -31,3 +31,9 @@ Finalmente corremos la aplicacion con el siguiente comando
 ```sh
 yarn start
 ```
+
+##Imagenes de muestra
+
+![alt text](screenshoots/mw1.png)
+![alt text](screenshoots/mw2.png)
+![alt text](screenshoots/mw3.png)
