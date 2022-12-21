@@ -32,7 +32,7 @@ Finalmente corremos la aplicacion con el siguiente comando
 yarn start
 ```
 
-##Imagenes de muestra
+## Imagenes de muestra
 
 ![alt text](screenshoots/mw1.png)
 ![alt text](screenshoots/mw2.png)
